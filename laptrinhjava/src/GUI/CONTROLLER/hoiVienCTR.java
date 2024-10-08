@@ -805,8 +805,6 @@ public class hoiVienCTR {
                                         cb.setSelectedItem(year);
                                     }
                                 }
-                                
-
                             }
                         j++;
                         }
