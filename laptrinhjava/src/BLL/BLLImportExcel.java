@@ -1,5 +1,6 @@
 package BLL;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -22,6 +23,8 @@ public class BLLImportExcel {
     private ArrayList<String> tenCotNV = new ArrayList<String>();
     private BLLQuanLyDanhSach bllQuanLyDanhSach;
     private DataTaiKhoan dataTaiKhoan;
+    public ArrayList<HoiVien> dsHV = new ArrayList<HoiVien>();
+    public ArrayList<DTOTaiKhoan> dsTaiKhoan = new ArrayList<DTOTaiKhoan>();
     public BLLImportExcel() {
     	tenCotHV = new ArrayList<String>();
     	tenCotHV.add("Mã hội viên");
@@ -52,6 +55,13 @@ public class BLLImportExcel {
     	dataTaiKhoan = new DataTaiKhoan();
     }
     
+    public ArrayList<DTOTaiKhoan> getDSTaiKhoan(){
+    	return this.dsTaiKhoan;
+    }
+    public ArrayList<HoiVien> getDSHoiVien(){
+    	return this.dsHV;
+    }
+    
 	public boolean kiemTraMaHV(String ma) {
 		ArrayList<HoiVien> dsHoiVien = bllQuanLyDanhSach.getDataHoiVien();
 		for(HoiVien hVien : dsHoiVien) {
@@ -67,10 +77,12 @@ public class BLLImportExcel {
 	}
 	
 	public String kiemTraDuLieuHV(XSSFSheet sheet, String ds) {
+		HoiVien tempHoiVien = new HoiVien();
+		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001");
 	        if(kiemTraCacCotNhapVao(sheet, ds).equals("Kiểm tra tên cột không thành công !")) {
-	        	for(int i=0;i<=sheet.getLastRowNum();i++) {
+	        	for(int i=1;i<=sheet.getLastRowNum();i++) {
 	        		XSSFRow row = sheet.getRow(i);
-	        		for(int j=0;j<tenCotHV.size();j++) {
+	        		for(int j=1;j<tenCotHV.size();j++) {
 	        			if(row == null) {
 	        				i++;
 	        				continue;
@@ -92,6 +104,9 @@ public class BLLImportExcel {
 	        					else if(!kiemTraMaHV(text)) {
 	        						return "Mã hội viên đã tồn tại vui lòng thêm mã hội viên khác, lỗi tại ô: "+cell.getAddress();
 	        					}
+	        					else {
+	        						tempHoiVien.setMaHoiVien(ds);
+	        					}
 	        					break;
 	        				case 1:
 	        					String regex_userName = "^[\\p{L}\\p{M}']+(?:[\\s][\\p{L}\\p{M}']+)*$";
@@ -103,6 +118,9 @@ public class BLLImportExcel {
 	        		            else if(!m_userName.matches()) {
 	        		            	return "Tên hội viên không được chứa kí tự đặc biệt và số, lỗi tại ô: " + cell.getAddress();
 	        		            }
+	        		            else {
+	        		            	tempHoiVien.setHoten(text);
+	        		            }
 	        					break;
 	        				case 2:
 	        					String regex_GioiTinh = "\\b(Nam|nam|Nữ|nữ)\\b";
@@ -110,6 +128,9 @@ public class BLLImportExcel {
 	        					Matcher m_GioiTinh = p_GioiTinh.matcher(text);
 	        					if(!m_GioiTinh.matches()) {
 	        						return "Giới tình phải là Nam hoặc Nữ, lỗi tại ô: "+cell.getAddress();
+	        					}
+	        					else {
+	        						tempHoiVien.setGioitinh(text);
 	        					}
 	        					break;
 	        				case 3:
@@ -121,6 +142,9 @@ public class BLLImportExcel {
 	        					}
 	        					else if (!m_email.matches()) {
 	        						return "Email không hợp lệ"+ cell.getAddress();
+	        					}
+	        					else {
+	        						tempHoiVien.setMail(text);
 	        					}
 	        					break;
 	        				case 4:
@@ -136,11 +160,17 @@ public class BLLImportExcel {
 	        					else if (kiemTraMaTK(text)) {
 	        						return "Mã tài khoản đã tồn tại, lỗi tại ô: "+ cell.getAddress();
 	        					}
+	        					else {
+	        						tempTaiKhoan.setIDTaiKhoan(text);
+								}
 	        					break;
 	        				case 5:
 	        					if(!bllQuanLyDanhSach.kiemTraSDT(text)){
 	        		                return "Số điện thoại không hợp lệ, lỗi tại ô: " + cell.getAddress();
 	        		            }
+	        					else {
+	        						tempHoiVien.setSdt(text);
+	        					}
 	        					break;
 	        				case 6:
 	        					String regex_Date = "^\\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$";
@@ -176,6 +206,11 @@ public class BLLImportExcel {
 	                    				        return "Tuổi của hội viên chưa đủ 18, vui lòng kiểm tra lại!, lỗi tại ô: " + cell.getAddress();
 	                    				    }
 	                    				}
+	                    				else {
+	                    					@SuppressWarnings("deprecation")
+											Date date = new Date(year-1900,month-1,day);
+	                    					tempHoiVien.setNgaysinh(date);
+	                    				}
 	        				        }
 	        					}
 	        					break;
@@ -189,6 +224,9 @@ public class BLLImportExcel {
 	        		        	else if(!m_account.matches()) {
 	        		        		return "Tài khoản không được chứa kí tự đặc biệt và phải dài từ 5 đến 20 kí tự!"+ cell.getAddress();
 	        		        	}
+	        		        	else {
+	        		        		tempTaiKhoan.setTaiKhoan(text);
+	        		        	}
 	        					break;
 	        				case 8:
 	        					String regex_pass = "^(?=.*[0-9])(?=.*[a-zA-Z]).{6,20}$";
@@ -197,10 +235,14 @@ public class BLLImportExcel {
 	        		        	if(!m_pass.matches()) {
 	        		                return "Mật khẩu phải dài hơn 6 kí tự bao gồm cả chữ và số, lỗi tại ô: " + cell.getAddress();
 	        		        	}
+	        		        	else {
+	        		        		tempTaiKhoan.setMatKhau(text);
+	        		        	}
 	        					break;
-	        			default:
-	        				break;
-	        			}
+		        			default:
+		        				break;
+		        			}
+	        			
 	        			}
 	        			System.out.print(" "+cell.getStringCellValue());
 	        		}
@@ -210,8 +252,11 @@ public class BLLImportExcel {
 	        else {
 				return kiemTraCacCotNhapVao(sheet, ds);
 			}
+	      dsHV.add(tempHoiVien);
+	      dsTaiKhoan.add(tempTaiKhoan);
 		return "Kiểm tra dữ liệu thành công!";
 	}
+	
 	//kiểm tra các tên cột
 	public String kiemTraCacCotNhapVao(XSSFSheet sheet, String ds) {
 	    // Lấy dòng đầu tiên từ sheet có dữ liệu
@@ -260,12 +305,7 @@ public class BLLImportExcel {
 	    }
 	    return "Kiểm tra tên cột không thành công !";
 	}
-	public ArrayList<HoiVien> layDuLieuFile(XSSFSheet sheet, String ds){
-		if(kiemTraCacCotNhapVao(sheet,ds).equals("Kiểm tra tên cột không thành công !") && kiemTraDuLieuHV(sheet, ds).equals("Kiểm tra dữ liệu thành công!")) {
-			System.out.println("hello");
-		}
-		return null;
-	}
+	
 	public boolean isValidDate(int day,int month,int year) {
 		boolean isLeapYear = ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
 		int maxDayinMonth = 0;

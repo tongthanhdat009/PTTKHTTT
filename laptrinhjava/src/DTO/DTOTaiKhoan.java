@@ -5,12 +5,20 @@ public class DTOTaiKhoan {
 	private String taiKhoan;
 	private String matKhau;
 	private String IDQuyen;
+	public DTOTaiKhoan() {
+		IDTaiKhoan = new String();
+		taiKhoan = new String();
+		matKhau = new String();
+		IDQuyen = new String();
+	}
+	
 	public DTOTaiKhoan(String IDTaiKhoan, String taiKhoan, String matKhau, String IDQuyen) {
 		setIDTaiKhoan(IDTaiKhoan);
 		setTaiKhoan(taiKhoan);
 		setMatKhau(matKhau);
 		setIDQuyen(IDQuyen);
 	}
+	
 	public String getIDTaiKhoan() {
 		return IDTaiKhoan;
 	}
