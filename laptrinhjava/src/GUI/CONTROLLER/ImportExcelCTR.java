@@ -132,9 +132,10 @@ public class ImportExcelCTR extends JPanel {
 //	                        System.out.print(" ");
 //	                }
 //	            }
-	            System.out.println(bllImportExcel.kiemTraDuLieu(sheet, excelFilePath));
-//	        }
-//			System.out.println(bllImportExcel.kiemTraCacCotNhapVao(sheet, "Hội viên"));
+	    		bllImportExcel.layDuLieuFile(sheet, "Hội viên");
+	            System.out.println(bllImportExcel.kiemTraDuLieuHV(sheet, "Hội viên"));
+////	        }
+			System.out.println(bllImportExcel.kiemTraCacCotNhapVao(sheet, "Hội viên"));
 
 	    } catch (IOException e) {
 	        e.printStackTrace();

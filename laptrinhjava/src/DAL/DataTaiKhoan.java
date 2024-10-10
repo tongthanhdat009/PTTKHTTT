@@ -53,8 +53,8 @@ public class DataTaiKhoan {
         return null; 
     }
 	
-//	kiểm tra mã đã có chưa
-	private boolean kiemTraTonTaiMaTK(String maTK) {
+	//	kiểm tra mã đã có chưa
+	public boolean kiemTraTonTaiMaTK(String maTK) {
         try {
         	con = DriverManager.getConnection(dbUrl, userName, password);
             PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS Count FROM TaiKhoan WHERE IDTaiKhoan = ?");
