@@ -61,6 +61,12 @@ public class BLLImportExcel {
     public ArrayList<HoiVien> getDSHoiVien(){
     	return this.dsHV;
     }
+    public ArrayList<String> getTenCotHV(){
+    	return tenCotHV;
+    }
+    public ArrayList<String> getTenCotNV(){
+    	return tenCotNV;
+    }
     
 	public boolean kiemTraMaHV(String ma) {
 		ArrayList<HoiVien> dsHoiVien = bllQuanLyDanhSach.getDataHoiVien();
@@ -77,12 +83,12 @@ public class BLLImportExcel {
 	}
 	
 	public String kiemTraDuLieuHV(XSSFSheet sheet, String ds) {
-		HoiVien tempHoiVien = new HoiVien();
-		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001");
-	        if(kiemTraCacCotNhapVao(sheet, ds).equals("Kiểm tra tên cột không thành công !")) {
+	        if(kiemTraCacCotNhapVao(sheet, ds).equals("Kiểm tra tên cột thành công !")) {
 	        	for(int i=1;i<=sheet.getLastRowNum();i++) {
+	        		HoiVien tempHoiVien = new HoiVien();
+	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001");
 	        		XSSFRow row = sheet.getRow(i);
-	        		for(int j=1;j<tenCotHV.size();j++) {
+	        		for(int j=0;j<tenCotHV.size();j++) {
 	        			if(row == null) {
 	        				i++;
 	        				continue;
@@ -105,7 +111,7 @@ public class BLLImportExcel {
 	        						return "Mã hội viên đã tồn tại vui lòng thêm mã hội viên khác, lỗi tại ô: "+cell.getAddress();
 	        					}
 	        					else {
-	        						tempHoiVien.setMaHoiVien(ds);
+	        						tempHoiVien.setMaHoiVien(text);
 	        					}
 	        					break;
 	        				case 1:
@@ -244,16 +250,18 @@ public class BLLImportExcel {
 		        			}
 	        			
 	        			}
+	        			
 	        			System.out.print(" "+cell.getStringCellValue());
 	        		}
+	        		dsHV.add(tempHoiVien);
+	      	      	dsTaiKhoan.add(tempTaiKhoan);
 	        		System.out.println();
 	        	}
 	        }
 	        else {
 				return kiemTraCacCotNhapVao(sheet, ds);
 			}
-	      dsHV.add(tempHoiVien);
-	      dsTaiKhoan.add(tempTaiKhoan);
+	      
 		return "Kiểm tra dữ liệu thành công!";
 	}
 	
@@ -303,7 +311,7 @@ public class BLLImportExcel {
 	            return "Tên cột không khớp: ô '" + (cell != null ? cell.getAddress() : "null") + "' không khớp với '" + tenCot.get(i) + "'";
 	        }
 	    }
-	    return "Kiểm tra tên cột không thành công !";
+	    return "Kiểm tra tên cột thành công !";
 	}
 	
 	public boolean isValidDate(int day,int month,int year) {

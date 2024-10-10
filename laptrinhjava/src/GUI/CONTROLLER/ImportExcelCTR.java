@@ -3,6 +3,9 @@ package GUI.CONTROLLER;
 import java.awt.Color;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -13,7 +16,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
+import org.apache.commons.math3.genetics.Fitness;
+import org.apache.poi.examples.hssf.usermodel.NewLinesInCells;
 import org.apache.poi.sl.usermodel.Sheet;
 import org.apache.poi.ss.formula.functions.IfFunc;
 import org.apache.poi.ss.usermodel.Cell;
@@ -23,6 +29,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import BLL.BLLImportExcel;
 import BLL.BLLXuatFileExcel;
+import DTO.DTOTaiKhoan;
+import DTO.HoiVien;
+import GUI.renderer;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -40,6 +49,7 @@ public class ImportExcelCTR extends JPanel {
 	private JTextField pathNameTF;
 	private BLLImportExcel bllImportExcel = new BLLImportExcel();
 	private JComboBox<String> sheetChooser = new JComboBox<String>();
+	private JPanel dataPanel = new JPanel();
 	public ImportExcelCTR() {
 		setBackground(new Color(241, 255, 250));
 		this.setSize(1200,900);
@@ -70,6 +80,7 @@ public class ImportExcelCTR extends JPanel {
 		fileInforPN.add(acceptBTN);
 		
 		JComboBox<String> listChooser = new JComboBox<String>();
+		listChooser.setEnabled(false);
 		listChooser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(pathNameTF.getText().equals("")){
@@ -80,10 +91,27 @@ public class ImportExcelCTR extends JPanel {
 				String list = (String) listChooser.getSelectedItem();
 				switch (list) {
 				case "Hội viên":
-					System.out.println("Hội viên");
+					int choice = JOptionPane.showConfirmDialog(null, "Bạn chắc muốn chọn danh sách không?","Import Excel",JOptionPane.YES_NO_OPTION);
+					if(choice == 0) {
+						System.out.println("Hội viên");
+						listChooser.setEnabled(false);
+						sheetChooser.setEnabled(true);						
+					}
+					else {
+						listChooser.setSelectedIndex(0);
+					}
 					break;
 				case "Nhân viên":
-					System.out.println("Nhân viên");
+					int choice1 = JOptionPane.showConfirmDialog(null, "Bạn chắc muốn chọn danh sách không?","Import Excel",JOptionPane.YES_NO_OPTION);
+					if(choice1 == 0) {
+						System.out.println("Nhân viên");
+						listChooser.setEnabled(false);
+						sheetChooser.setEnabled(true);						
+					}
+					else {
+						listChooser.setSelectedIndex(0);
+					}
+					sheetChooser.setEnabled(true);
 					break;
 				default:
 					break;
@@ -117,7 +145,15 @@ public class ImportExcelCTR extends JPanel {
 				    // Lấy đường dẫn của tệp được chọn
 				    File selectedFile = fileChooser.getSelectedFile();
 				    pathNameTF.setText(selectedFile.toString());
+				    for (int i = sheetChooser.getItemCount() - 1; i >= 0; i--) {
+		                if (!sheetChooser.getItemAt(i).toString().equals("Chọn sheet")) {
+		                    sheetChooser.removeItemAt(i); // Sử dụng removeItemAt để xóa theo chỉ số
+		                }
+		            }
 					excelReader(sheetChooser, selectedFile.toString());
+					listChooser.setEnabled(true);
+					sheetChooser.setEnabled(false);
+					
 				} else {
 				    System.out.println("Không có tệp nào được chọn");
 				}
@@ -139,6 +175,8 @@ public class ImportExcelCTR extends JPanel {
 		fileInforPN.add(SheetChooser);
 		
 		sheetChooser = new JComboBox<String>();
+		sheetChooser.setBackground(new Color(255, 255, 255));
+		sheetChooser.setEnabled(false);
 		sheetChooser.setModel(new DefaultComboBoxModel<String>(new String[] {"Chọn sheet"}));
 		sheetChooser.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
 		sheetChooser.setBounds(238, 53, 150, 30);
@@ -148,51 +186,102 @@ public class ImportExcelCTR extends JPanel {
 					JOptionPane.showMessageDialog(null, "Vui lòng chọn file sau đó chọn sheet","Import Excel",JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				System.out.println(sheetChooser.getSelectedItem());
+				else {
+					if(!sheetChooser.getSelectedItem().toString().equals("Chọn sheet")) {
+						int choice=JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn chọn sheet này không?","Import Excel",JOptionPane.YES_NO_OPTION);
+						if(choice == 0) {
+							sheetChooser.setEnabled(false);
+							if(listChooser.getSelectedItem().equals("Hội viên")) {
+								System.out.println("Tạo bảng hội viên");
+								taoBangHV("Hội viên", bllImportExcel,dataPanel);
+							}
+							else if(listChooser.getSelectedItem().equals("Nhân viên")) {
+								System.out.println("Tạo bảng nhân viên");
+							}
+						}
+						else if (choice == 1){
+							sheetChooser.setSelectedIndex(0);
+						}						
+					}
+					
+				}
 			}
 			
 		});
 		fileInforPN.add(sheetChooser);
 		
-		JPanel dataPanel = new JPanel();
 		dataPanel.setLayout(null);
 		dataPanel.setBounds(0, 250, 1200, 650);
 		add(dataPanel);
 	}
 	public void excelReader(JComboBox<String> sheetChooser, String filePath) {
-//	    String excelFilePath = "C:\\Users\\dat\\Desktop\\a.xlsx";
 	    try (FileInputStream fileInputStream = new FileInputStream(filePath);
-	         XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream)) {
-
-	    	// Lặp qua các sheet và in tên của chúng
+	        XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream)) {
             for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
                 String sheetName = workbook.getSheetName(i);
                 sheetChooser.addItem(sheetName);
-                
             }
-	        // Chọn sheet đầu tiên
-	        // Lặp qua các hàng trong sheet
-//	        for (Row row : sheet) {
-//	            for (Cell cell : row) {
-//	                // Xử lý các kiểu dữ liệu khác nhau
-//	                switch (cell.getCellType()) {
-//	                    case STRING:
-//	                        System.out.print(cell.getStringCellValue() + "\t");
-//	                        break;
-//	                    case NUMERIC:
-//	                        System.out.print(cell.getNumericCellValue() + "\t");
-//	                        break;
-//	                    case BOOLEAN:
-//	                        System.out.print(cell.getBooleanCellValue() + "\t");
-//	                        break;
-//	                    default:
-//	                        System.out.print(" ");
-//	                }
-//	            }
-////	        }
+            
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
 	}
-	
+	public void taoBangHV(String ds, BLLImportExcel bllImportExcel, JPanel dataPanel) {
+		XSSFSheet sheet = null;
+		try (FileInputStream fileInputStream = new FileInputStream(pathNameTF.getText());
+			XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream)) {
+			sheet = workbook.getSheet(sheetChooser.getSelectedItem().toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		JTable tempTB = null;
+		DefaultTableModel tableModel = null;
+		if(bllImportExcel.kiemTraDuLieuHV(sheet, ds).equals("Kiểm tra dữ liệu thành công!")) {
+		    ArrayList<HoiVien> dsHoiVien = bllImportExcel.getDSHoiVien();
+		    ArrayList<DTOTaiKhoan> dsTaiKhoan = bllImportExcel.getDSTaiKhoan();
+		    ArrayList<String> tenCot = bllImportExcel.getTenCotHV();
+
+		    // Chuyển ArrayList<String> tenCot sang mảng String[]
+		    String[] tenCotStrings = new String[tenCot.size()];
+		    for (int j = 0; j < tenCot.size(); j++) {
+		        tenCotStrings[j] = tenCot.get(j);
+		    }
+
+		    // Khởi tạo DefaultTableModel với tiêu đề cột
+		    tableModel = new DefaultTableModel(tenCotStrings, 0);
+
+		    // Kiểm tra kích thước của dsHoiVien và dsTaiKhoan
+		    if (dsHoiVien.size() == dsTaiKhoan.size()) {
+		        // Thêm dữ liệu từ dsHoiVien và dsTaiKhoan vào bảng
+		        for (int i = 0; i < dsHoiVien.size(); i++) {
+		            tableModel.addRow(new Object[]{
+		                dsHoiVien.get(i).getMaHoiVien(),
+		                dsHoiVien.get(i).getHoten(),
+		                dsHoiVien.get(i).getGioitinh(),
+		                dsHoiVien.get(i).getMail(),
+		                dsTaiKhoan.get(i).getIDTaiKhoan(),
+		                dsHoiVien.get(i).getSdt(),
+		                dsHoiVien.get(i).getNgaysinh(),
+		                dsTaiKhoan.get(i).getTaiKhoan(),
+		                dsTaiKhoan.get(i).getMatKhau()
+		            });
+		        }
+
+		        // Tạo JTable với DefaultTableModel và thêm vào JScrollPane
+		        tempTB = new JTable(tableModel);
+		        tempTB.setBounds(0, 0, 1200, 650);
+		        JScrollPane scrollPane = new JScrollPane(tempTB);
+		        scrollPane.setBounds(0, 0, 1185, 610);
+		        dataPanel.add(scrollPane);
+		        dataPanel.revalidate();
+		        dataPanel.repaint();
+		    } else {
+		        System.out.println("Danh sách Hội Viên và Tài Khoản không có cùng số lượng!");
+		    }
+		}
+		else {
+			JOptionPane.showMessageDialog(null, bllImportExcel.kiemTraDuLieuHV(sheet, ds),"Export Excel",JOptionPane.ERROR_MESSAGE);
+			 return;
+		}
+	}
 }
