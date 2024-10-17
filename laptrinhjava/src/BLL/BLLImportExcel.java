@@ -3,6 +3,7 @@ package BLL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,10 +13,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
+import DAL.DataHoiVien;
+import DAL.DataNhanVien;
 import DAL.DataTaiKhoan;
 import DTO.DTOTaiKhoan;
 import DTO.HoiVien;
 import DTO.NhanVien;
+import DTO.dsHoiVien;
 
 public class BLLImportExcel {
     private ArrayList<String> tenCotHV = new ArrayList<String>();
@@ -111,7 +115,7 @@ public class BLLImportExcel {
 	        				return "Có ô không có thông tin vui lòng kiểm tra lại";
 	        			}
 	        			else {
-	        				String text = cell.getStringCellValue();
+	        				String text = cell.getStringCellValue().trim();
 	        				switch (j) {
 	        				case 0:
 	        					String regex_maHV = "^HV\\d{3}$";
@@ -142,7 +146,7 @@ public class BLLImportExcel {
 	        		            }
 	        					break;
 	        				case 2:
-	        					String regex_GioiTinh = "\\b(Nam|nam|Nữ|nữ)\\b";
+	        					String regex_GioiTinh = "(Nam|Nữ|nam|nữ)";
 	        					Pattern p_GioiTinh = Pattern.compile(regex_GioiTinh);
 	        					Matcher m_GioiTinh = p_GioiTinh.matcher(text);
 	        					if(!m_GioiTinh.matches()) {
@@ -284,7 +288,7 @@ public class BLLImportExcel {
 	        		NhanVien tempNhanVien = new NhanVien();
 	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001");
 	        		XSSFRow row = sheet.getRow(i);
-	        		for(int j=0;j<tenCotHV.size();j++) {
+	        		for(int j=0;j<tenCotNV.size();j++) {
 	        			if(row == null) {
 	        				i++;
 	        				continue;
@@ -294,7 +298,7 @@ public class BLLImportExcel {
 	        				return "Có ô không có thông tin vui lòng kiểm tra lại";
 	        			}
 	        			else {
-	        				String text = cell.getStringCellValue();
+	        				String text = cell.getStringCellValue().trim();
 	        				switch (j) {
 	        				case 0:
 	        					String regex_maNV = "^NV\\d{3}$";
@@ -325,7 +329,7 @@ public class BLLImportExcel {
 	        		            }
 	        					break;
 	        				case 2:
-	        					String regex_GioiTinh = "\\b(Nam|nam|Nữ|nữ)\\b";
+	        					String regex_GioiTinh = "(Nam|Nữ|nam|nữ)";
 	        					Pattern p_GioiTinh = Pattern.compile(regex_GioiTinh);
 	        					Matcher m_GioiTinh = p_GioiTinh.matcher(text);
 	        					if(!m_GioiTinh.matches()) {
@@ -369,9 +373,9 @@ public class BLLImportExcel {
 	        						if(year < 1900 || year > currentYear) {
 	        							return "Năm sinh phải không được nhỏ hơn 1900 và lớn hơn năm hiện tại, lỗi tại ô: " + cell.getAddress();
 	        						}
-	        						if(!isValidDate(day, month, year)) {
-	        							return "Ngày tháng năm sinh không hợp lệ, lỗi tại ô: " + cell.getAddress();
-	        						}
+//	        						if(!isValidDate(day, month, year)) {
+//	        							return "Ngày tháng năm sinh không hợp lệ, lỗi tại ô: " + cell.getAddress();
+//	        						}
 	        						else {
 	        							if (currentYear - year < 18) {
 	        								return "Tuổi của nhân viên chưa đủ 18, vui lòng kiểm tra lại, lỗi tại ô: " + cell.getAddress();
@@ -410,6 +414,7 @@ public class BLLImportExcel {
 	                            else {
 	                            	tempNhanVien.setSocccd(text);
 	                            }
+	                            break;
 	        				case 6:
 	        					//regex mã cơ sở
 	        					String regex_coso = "^CS\\d{3}$";
@@ -421,11 +426,9 @@ public class BLLImportExcel {
 	        					else {
 									tempNhanVien.setMacoso(text);
 								};
+								break;
 	        				case 7:
-	        					if(!text.equals("Nhân viên") || !text.equals("Quản lý")) {
-	        						return "Vai trò của nhân viên phải là nhân viên hoặc quản lý, lỗi tại ô: "+cell.getAddress();
-	        					}
-	        					else {
+	        					if(text.trim().equals("Nhân viên") || text.trim().equals("Quản lý")) {
 	        						if(text.equals("Nhân viên")) {
 	        							tempNhanVien.setVaitro(text);
 	        						}
@@ -433,6 +436,10 @@ public class BLLImportExcel {
 	        							tempNhanVien.setVaitro(text);
 	        						}
 	        					}
+	        					else {
+	        						return "Vai trò của nhân viên phải là nhân viên hoặc quản lý, lỗi tại ô: "+cell.getAddress();
+	        					}
+	        					break;
 	        				case 8:
 	        					int numb;
 	        					try {
@@ -447,6 +454,7 @@ public class BLLImportExcel {
 	        					else {
 									tempNhanVien.setLuong(numb);
 								}
+	        					break;
 	        				case 9:
 	        		        	String regex_account = "^[a-zA-Z0-9]{5,20}$";
 	        					Pattern p_account = Pattern.compile(regex_account);
@@ -495,11 +503,11 @@ public class BLLImportExcel {
 	        			
 	        			}
 	        			
-	//        			System.out.print(" "+cell.getStringCellValue());
+	        			System.out.print(" "+cell.getStringCellValue());
 	        		}
 	        		dsNV.add(tempNhanVien);
 	      	      	dsTaiKhoan.add(tempTaiKhoan);
-	//        		System.out.println();
+	        		System.out.println();
 	        	}
 	        }
 	        else {
@@ -576,6 +584,23 @@ public class BLLImportExcel {
 			}
 		}
 		return day >= 1 && day <= maxDayinMonth;
+	}
+	
+	//thêm dữ liệu vào csdl
+	public void themDuLieuVaoHVCSDL() {
+		DataHoiVien dataHoiVien = new DataHoiVien();
+		for (int i = 0;i<dsHV.size();i++) {
+			dataHoiVien.them(dsHV.get(i));
+			dataTaiKhoan.themTK(dsTaiKhoan.get(i));
+		}
+	}
+	
+	public void themDuLieuVaoNVCSDL() {
+		DataNhanVien dataNhanVien = new DataNhanVien();
+		for (int i=0; i<dsNV.size();i++) {
+			dataNhanVien.them(dsNV.get(i));
+			dataTaiKhoan.themTK(dsTaiKhoan.get(i));
+		}
 	}
 }
 

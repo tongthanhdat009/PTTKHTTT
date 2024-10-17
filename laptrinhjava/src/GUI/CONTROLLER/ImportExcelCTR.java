@@ -186,10 +186,12 @@ public class ImportExcelCTR extends JPanel {
 							if(listChooser.getSelectedItem().equals("Hội viên")) {
 								System.out.println("Tạo bảng hội viên");
 								taoBangHV("Hội viên", bllImportExcel,dataPanel);
+								
 							}
 							else if(listChooser.getSelectedItem().equals("Nhân viên")) {
 								System.out.println("Tạo bảng nhân viên");
 								taoBangNV("Nhân viên", bllImportExcel, dataPanel);
+								
 							}
 						}
 						else if (choice == 1){
@@ -202,7 +204,30 @@ public class ImportExcelCTR extends JPanel {
 			
 		});
 		fileInforPN.add(sheetChooser);
-		
+		acceptBTN.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!(listChooser.isEnabled()&&listChooser.getSelectedIndex()==0) && !(sheetChooser.isEditable()&&sheetChooser.getSelectedIndex()==0) && !pathNameTF.getText().equals("")) {
+					int result = JOptionPane.showConfirmDialog(null, "Bạn đã chắc chắn với dữ liệu đã nhập chứ?","Nhập file danh sách",JOptionPane.YES_NO_OPTION);
+					if(result == 0) {
+						if(listChooser.getSelectedItem().toString().equals("Hội viên")) {
+							bllImportExcel.themDuLieuVaoHVCSDL();
+							JOptionPane.showMessageDialog(null, "Thêm dữ liệu thành công vào chức năng quản lý hội viên để kiểm tra!","Nhập file danh sách",JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
+						else if(listChooser.getSelectedItem().toString().equals("Nhân viên")) {
+							bllImportExcel.themDuLieuVaoNVCSDL();
+							JOptionPane.showMessageDialog(null, "Thêm dữ liệu thành công vào chức năng quản lý nhân viên để kiểm tra!","Nhập file danh sách",JOptionPane.INFORMATION_MESSAGE);
+							return;
+						}
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn đầy đủ tất cả thông tin","Nhập file danh sách", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+		});
 		dataPanel.setLayout(null);
 		dataPanel.setBounds(0, 250, 1200, 650);
 		add(dataPanel);
@@ -229,7 +254,7 @@ public class ImportExcelCTR extends JPanel {
 		}
 		JTable tempTB = null;
 		DefaultTableModel tableModel = null;
-		if(bllImportExcel.kiemTraDuLieuNV(sheet, ds).equals("Kiểm tra dữ liệu thành công")) {
+		if(bllImportExcel.kiemTraDuLieuNV(sheet, ds).equals("Kiểm tra dữ liệu thành công!")) {
 			ArrayList<NhanVien> dsNhanVien = bllImportExcel.getDSNhanVien();
 			ArrayList<DTOTaiKhoan> dsTaiKhoan = bllImportExcel.getDSTaiKhoan();
 			ArrayList<String> tenCot = bllImportExcel.getTenCotNV();
