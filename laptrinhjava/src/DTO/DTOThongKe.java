@@ -1,49 +1,37 @@
 package DTO;
-
+import java.util.ArrayList;
 public class DTOThongKe {
     private String maCoSo;
     private String tenCoSo;
-    private int thang;
-    private int nam;
-    private int giaTri;
+    private ArrayList<ThuChi> thuChi;
     public DTOThongKe() {
         maCoSo = "";
         tenCoSo = "";
-        thang = -1;
-        nam = -1;
-        giaTri = -1;
-    }
-    public void setMaCoSo(String maCoSo) {
-        this.maCoSo = maCoSo;
-    }
-    public void setNam(int nam) {
-        this.nam = nam;
-    }
-    public void setTenCoSo(String tenCoSo) {
-        this.tenCoSo = tenCoSo;
-    }
-    public void setThang(int thang) {
-        this.thang = thang;
-    }
-    public void setGiaTri(int giaTri) {
-        this.giaTri = giaTri;
-    }
-    public int getGiaTri() {
-        return giaTri;
+        thuChi = new ArrayList<>();
     }
     public String getMaCoSo() {
         return maCoSo;
     }
-    public int getNam() {
-        return nam;
-    }
     public String getTenCoSo() {
         return tenCoSo;
     }
-    public int getThang() {
-        return thang;
+    public ArrayList<ThuChi> getThuChi() {
+        return thuChi;
     }
-    public String toString() {
-        return  maCoSo+":"+tenCoSo+":"+thang+":"+nam+":"+giaTri;
+    public void setMaCoSo(String maCoSo) {
+        this.maCoSo = maCoSo;
+    }
+    public void setTenCoSo(String tenCoSo) {
+        this.tenCoSo = tenCoSo;
+    }
+    public void setThuChi(ArrayList<ThuChi> thuChi) {
+        this.thuChi = thuChi;
+    }
+    public void themThuChi(ThuChi ThuChi) {
+        thuChi.add(ThuChi);
+    }
+    public void xuat(){
+        for(int i=0;i<thuChi.size();i++)
+        System.out.println(maCoSo+":"+tenCoSo+":"+thuChi.get(i).getThang()+":"+thuChi.get(i).getNam()+":"+thuChi.get(i).getGiaTri());
     }
 }
