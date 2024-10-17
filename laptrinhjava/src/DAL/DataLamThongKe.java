@@ -1,8 +1,5 @@
 package DAL;
 import java.sql.*;
-import java.util.ArrayList;
-
-import DTO.DTOThongKeDonHang;
 public class DataLamThongKe{
     private Connection con;
     private String dbUrl ="jdbc:sqlserver://localhost:1433;databaseName=main;encrypt=true;trustServerCertificate=true;";
@@ -10,41 +7,94 @@ public class DataLamThongKe{
     public DataLamThongKe()
     {
         try{
+            con = DriverManager.getConnection(dbUrl, userName, password);
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         }catch(Exception e){
             System.out.println(e);   
         }
     }
-    public ArrayList<DTOThongKeDonHang> locLayDanhSach(String tenHangHoa, String tenCoSO, String tuNgay, String denNgay)
-    {
-        ArrayList<DTOThongKeDonHang> ds = new ArrayList<>();
-        String truyVan;
-        truyVan =   "SELECT TenLoaiHangHoa, SUM(SoLuongHang) AS SL, GiaNhap, GiaNhap * SUM(SoLuongHang) AS DoanhThu "+
-                    "FROM HangHoa, ChiTietHoaDon, HoaDon "+
-                    "WHERE HangHoa.MaHangHoa = ChiTietHoaDon.MaHangHoa AND ChiTietHoaDon.MaHD = HoaDon.MaHD AND";
-        truyVan += " NgayXuatHD > ? AND NgayXuatHD < ? AND";
-        if(!tenHangHoa.equals("NULL")) truyVan += " TenLoaiHangHoa = ? AND";
-        if(!tenCoSO.equals("NULL")) truyVan += " MaCoSo = ?";
-        if (truyVan.endsWith(" AND"))  truyVan = truyVan.substring(0, truyVan.length() - 3);
-        truyVan += "GROUP BY TenLoaiHangHoa, GiaNhap";
+    public int timDoanhThuTheoThangCuaCoSo(String maCoSo, int thang, int nam) {
+        String truyVan= "SELECT MaCoSo ,SUM(Gia) AS DoanhThu FROM ChiTietHoaDon CTHD, HoaDon HD "+
+                        "WHERE CTHD.MaHD = HD.MaHD AND MONTH(NgayXuatHD) = ? AND YEAR(NgayXuatHD) = ? AND MaCoSo = ? "+
+                        "Group by MaCoSo";
+        int tong = -1;
         try {
-            con = DriverManager.getConnection(dbUrl, userName, password);
             PreparedStatement stmt = con.prepareStatement(truyVan);
-            stmt.setString(1, tuNgay);
-            stmt.setString(2, denNgay);
-            int i = 3;
-            if(!tenHangHoa.equals("NULL")) 
-            {
-                stmt.setString(i, tenHangHoa);
-                i++;
-            }
-            if(!tenCoSO.equals("NULL")) stmt.setString(i, tenCoSO);
+            stmt.setInt(1, thang);
+            stmt.setInt(2, nam);
+            stmt.setString(3, maCoSo);
             ResultSet rs = stmt.executeQuery();
-            while(rs.next())
-            ds.add(new DTOThongKeDonHang(rs.getString("TenLoaiHangHoa"), rs.getInt("DoanhThu"), rs.getInt("SL")));
+            if(rs.next()) tong = rs.getInt("DoanhThu");
+            else tong = 0;
         } catch (Exception e) {
-            System.out.println(e);   
+            System.out.println(e);  
         }
-        return ds;
+        return tong;
+    }
+    public String timTenCoSo(String maCoSo) {
+        String truyVan = "SELECT * FROM CoSo WHERE MaCoSo = ?";
+        try {
+            PreparedStatement stmt = con.prepareStatement(truyVan);
+            stmt.setString(1, maCoSo);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) return rs.getString("TenCoSo");
+            return "Mã cơ sở không tồn tại";
+        } catch (Exception e) {
+            System.out.println(e);  
+        }
+        return "Lỗi";
+    }
+    public int timDoanhThuTheoNamCuaCoSo(String maCoSo, int nam) {
+        String truyVan= "SELECT MaCoSo ,SUM(Gia) AS DoanhThu FROM ChiTietHoaDon CTHD, HoaDon HD "+
+                        "WHERE CTHD.MaHD = HD.MaHD AND YEAR(NgayXuatHD) = ? AND MaCoSo = ? "+
+                        "Group by MaCoSo";
+        int tong = -1;
+        try {
+            PreparedStatement stmt = con.prepareStatement(truyVan);
+            stmt.setInt(1, nam);
+            stmt.setString(2, maCoSo);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) tong = rs.getInt("DoanhThu");
+            else tong = 0;
+        } catch (Exception e) {
+            System.out.println(e);  
+        }
+        return tong;
+    }
+    public int timChiPhiTheoThangCuaCoSo(String maCoSo, int thang, int nam) {
+        String truyVan = "SELECT MaCoSo, SUM(GiaNhap * SoLuong) AS CHI FROM NhanVien NV, PhieuNhap PN, ChiTietPhieuNhap CTPN " +
+                        "WHERE PN.MaNV = NV.MaNV AND CTPN.MaPhieuNhap = PN.MaPhieuNhap AND MONTH(NgayNhap) = ? AND YEAR(NgayNhap) = ? AND NV.MaCoSo = ? " +
+                        "GROUP BY MaCoSo";
+        System.out.println(truyVan);
+        int tong = -1;
+        try {
+            PreparedStatement stmt = con.prepareStatement(truyVan);
+            stmt.setInt(1, thang);
+            stmt.setInt(2, nam);
+            stmt.setString(3, maCoSo);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) tong = rs.getInt("Chi");
+            else tong = 0;
+        } catch (Exception e) {
+            System.out.println(e);  
+        }
+        return tong;
+    }
+    public int timChiPhiTheoNamCuaCoSo(String maCoSo, int nam) {
+        String truyVan = "SELECT MaCoSo, SUM(GiaNhap * SoLuong) AS CHI FROM NhanVien NV, PhieuNhap PN, ChiTietPhieuNhap CTPN " +
+                        "WHERE PN.MaNV = NV.MaNV AND CTPN.MaPhieuNhap = PN.MaPhieuNhap AND YEAR(NgayNhap) = ? AND NV.MaCoSo = ? " +
+                        "GROUP BY MaCoSo";
+        int tong = -1;
+        try {
+            PreparedStatement stmt = con.prepareStatement(truyVan);
+            stmt.setInt(1, nam);
+            stmt.setString(2, maCoSo);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) tong = rs.getInt("Chi");
+            else tong = 0;
+        } catch (Exception e) {
+            System.out.println(e);  
+        }
+        return tong;
     }
 }
