@@ -6,8 +6,6 @@ import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JOptionPane;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import DAL.DataTaiKhoan;
 import DTO.DTOTaiKhoan;
 import DTO.HoiVien;
+import DTO.NhanVien;
 
 public class BLLImportExcel {
     private ArrayList<String> tenCotHV = new ArrayList<String>();
@@ -24,6 +23,7 @@ public class BLLImportExcel {
     private BLLQuanLyDanhSach bllQuanLyDanhSach;
     private DataTaiKhoan dataTaiKhoan;
     public ArrayList<HoiVien> dsHV = new ArrayList<HoiVien>();
+    public ArrayList<NhanVien> dsNV = new ArrayList<NhanVien>();
     public ArrayList<DTOTaiKhoan> dsTaiKhoan = new ArrayList<DTOTaiKhoan>();
     public BLLImportExcel() {
     	tenCotHV = new ArrayList<String>();
@@ -67,11 +67,24 @@ public class BLLImportExcel {
     public ArrayList<String> getTenCotNV(){
     	return tenCotNV;
     }
+    public ArrayList<NhanVien> getDSNhanVien(){
+    	return this.dsNV;
+    }
     
 	public boolean kiemTraMaHV(String ma) {
 		ArrayList<HoiVien> dsHoiVien = bllQuanLyDanhSach.getDataHoiVien();
 		for(HoiVien hVien : dsHoiVien) {
 			if(hVien.getMaHoiVien().equals(ma)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean kiemTraMaNV(String ma) {
+		ArrayList<NhanVien> dsNhanVien = bllQuanLyDanhSach.getDataNhanVien();
+		for(NhanVien nVien : dsNhanVien) {
+			if(nVien.getMaNhanVien().equals(ma)) {
 				return false;
 			}
 		}
@@ -251,11 +264,11 @@ public class BLLImportExcel {
 	        			
 	        			}
 	        			
-	        			System.out.print(" "+cell.getStringCellValue());
+//	        			System.out.print(" "+cell.getStringCellValue());
 	        		}
 	        		dsHV.add(tempHoiVien);
 	      	      	dsTaiKhoan.add(tempTaiKhoan);
-	        		System.out.println();
+//	        		System.out.println();
 	        	}
 	        }
 	        else {
@@ -264,7 +277,237 @@ public class BLLImportExcel {
 	      
 		return "Kiểm tra dữ liệu thành công!";
 	}
-	
+		//Kiểm tra dữ liệu nhân viên
+		public String kiemTraDuLieuNV(XSSFSheet sheet, String ds) {
+	        if(kiemTraCacCotNhapVao(sheet, ds).equals("Kiểm tra tên cột thành công !")) {
+	        	for(int i=1;i<=sheet.getLastRowNum();i++) {
+	        		NhanVien tempNhanVien = new NhanVien();
+	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001");
+	        		XSSFRow row = sheet.getRow(i);
+	        		for(int j=0;j<tenCotHV.size();j++) {
+	        			if(row == null) {
+	        				i++;
+	        				continue;
+	        			}
+	        			Cell cell = row.getCell(j);
+	        			if(cell == null) {
+	        				return "Có ô không có thông tin vui lòng kiểm tra lại";
+	        			}
+	        			else {
+	        				String text = cell.getStringCellValue();
+	        				switch (j) {
+	        				case 0:
+	        					String regex_maNV = "^NV\\d{3}$";
+	        					Pattern p_maNV = Pattern.compile(regex_maNV);
+	        					Matcher m_maNV = p_maNV.matcher(text);
+	        					if(!m_maNV.matches()) {
+	        						return "Mã nhân viên phải bắt đầu bằng NV và 3 chữ số theo sau, lỗi tại ô: "+cell.getAddress();
+	        					}
+	        					else if(!kiemTraMaNV(text)) {
+	        						return "Mã Nhân viên đã tồn tại vui lòng thêm mã hội viên khác, lỗi tại ô: "+cell.getAddress();
+	        					}
+	        					else {
+	        						tempNhanVien.setMaNhanVien(text);
+	        					}
+	        					break;
+	        				case 1:
+	        					String regex_userName = "^[\\p{L}\\p{M}']+(?:[\\s][\\p{L}\\p{M}']+)*$";
+	        			        Pattern p_userName = Pattern.compile(regex_userName);
+	        		            Matcher m_userName = p_userName.matcher(text);
+	        		            if(!(text.length() > 0 && text.length()<=50)) {
+	        		            	return "Tên nhân viên chỉ dài từ 1 đến 50 kí tự, lỗi tại ô: "+cell.getAddress();
+	        		            }
+	        		            else if(!m_userName.matches()) {
+	        		            	return "Tên nhân viên không được chứa kí tự đặc biệt và số, lỗi tại ô: " + cell.getAddress();
+	        		            }
+	        		            else {
+	        		            	tempNhanVien.setHoten(text);
+	        		            }
+	        					break;
+	        				case 2:
+	        					String regex_GioiTinh = "\\b(Nam|nam|Nữ|nữ)\\b";
+	        					Pattern p_GioiTinh = Pattern.compile(regex_GioiTinh);
+	        					Matcher m_GioiTinh = p_GioiTinh.matcher(text);
+	        					if(!m_GioiTinh.matches()) {
+	        						return "Giới tình phải là Nam hoặc Nữ, lỗi tại ô: "+cell.getAddress();
+	        					}
+	        					else {
+	        						tempNhanVien.setGioitinh(text);
+	        					}
+	        					break;
+//	        				case 3:
+//	        					String regex_email = "^[a-zA-Z0-9_+&*-]+(?:\\\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+.)+[a-zA-Z]{2,7}$";
+//	        					Pattern p_email = Pattern.compile(regex_email);
+//	        					Matcher m_email = p_email.matcher(text);
+//	        					if (!(text.length() >= 1 && text.length() <= 345)) {
+//	        						return "Email dài từ 1 đến 345 kí tự, lỗi tại ô: "+cell.getAddress();
+//	        					}
+//	        					else if (!m_email.matches()) {
+//	        						return "Email không hợp lệ"+ cell.getAddress();
+//	        					}
+//	        					else {
+//	        						tempNhanVien.setMail(text);
+//	        					}
+//	        					break;
+	        				case 3:
+	        					String regex_Date = "^\\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$";
+	        					Pattern p_Date = Pattern.compile(regex_Date);
+	        					Matcher m_Date = p_Date.matcher(text);
+	        					if(!m_Date.matches()) {
+	        						return "Ngày sinh phải theo định dạng yyyy-mm-dd, lỗi tại ô: "+ cell.getAddress();
+	        					}
+	        					else {
+	        						String[] parts = text.split("-");
+	        						
+	        						// Chuyển các phần thành số nguyên
+	        						int year = Integer.parseInt(parts[0]);
+	        						int month = Integer.parseInt(parts[1]);
+	        						int day = Integer.parseInt(parts[2]);
+	        						int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+	        						int currentDay = Calendar.getInstance().get(Calendar.DATE);
+	        						int currentMonth = Calendar.getInstance().get(Calendar.MONTH)+1;
+	        						if(year < 1900 || year > currentYear) {
+	        							return "Năm sinh phải không được nhỏ hơn 1900 và lớn hơn năm hiện tại, lỗi tại ô: " + cell.getAddress();
+	        						}
+	        						if(!isValidDate(day, month, year)) {
+	        							return "Ngày tháng năm sinh không hợp lệ, lỗi tại ô: " + cell.getAddress();
+	        						}
+	        						else {
+	        							if (currentYear - year < 18) {
+	        								return "Tuổi của nhân viên chưa đủ 18, vui lòng kiểm tra lại, lỗi tại ô: " + cell.getAddress();
+	        							} 
+	        							else if (currentYear - year == 18) {
+	        								// Kiểm tra tháng và ngày
+	        								if (currentMonth < month || (currentMonth == month && currentDay < day)) {
+	        									System.out.println((currentDay) + " " + day);				    
+	        									return "Tuổi của nhân viên chưa đủ 18, vui lòng kiểm tra lại!, lỗi tại ô: " + cell.getAddress();
+	        								}
+	        							}
+	        							else {
+	        								@SuppressWarnings("deprecation")
+	        								Date date = new Date(year-1900,month-1,day);
+	        								tempNhanVien.setNgaysinh(date);
+	        							}
+	        						}
+	        					}
+	        					break;
+	        				case 4:
+	        					if(!bllQuanLyDanhSach.kiemTraSDT(text)){
+	        						return "Số điện thoại không hợp lệ, lỗi tại ô: " + cell.getAddress();
+	        					}
+	        					else {
+	        						tempNhanVien.setSdt(text);
+	        					}
+	        					break;
+	        				case 5:
+	        					//regex căn cước công dân
+	                            String regex_cccd = "^[0-9]{12}$";
+	                            Pattern p_cccd = Pattern.compile(regex_cccd);
+	                            Matcher m_cccd = p_cccd.matcher(text);
+	                            if(!m_cccd.matches() || text.length() > 12) {
+	                            	return "Căn cước công dân không hợp lệ! Lỗi tại ô: "+cell.getAddress();
+	                            }
+	                            else {
+	                            	tempNhanVien.setSocccd(text);
+	                            }
+	        				case 6:
+	        					//regex mã cơ sở
+	        					String regex_coso = "^CS\\d{3}$";
+	        					Pattern p_coso = Pattern.compile(regex_coso);
+	        					Matcher m_coso = p_coso.matcher(text);
+	        					if(!m_coso.matches()) {
+	        						return "Mã cơ sở không hợp lệ!, Lỗi tại ô: "+cell.getAddress();
+	        					}
+	        					else {
+									tempNhanVien.setMacoso(text);
+								};
+	        				case 7:
+	        					if(!text.equals("Nhân viên") || !text.equals("Quản lý")) {
+	        						return "Vai trò của nhân viên phải là nhân viên hoặc quản lý, lỗi tại ô: "+cell.getAddress();
+	        					}
+	        					else {
+	        						if(text.equals("Nhân viên")) {
+	        							tempNhanVien.setVaitro(text);
+	        						}
+	        						else if(text.equals("Quản lý")) {
+	        							tempNhanVien.setVaitro(text);
+	        						}
+	        					}
+	        				case 8:
+	        					int numb;
+	        					try {
+	        						numb = Integer.parseInt(text);
+	        					}
+	        					catch (Exception e) {
+									return "Lương phải là 1 số";
+								}
+	        					if(numb<=0) {
+	        						return "Lương phải lớn hoặc bằng 1";
+	        					}
+	        					else {
+									tempNhanVien.setLuong(numb);
+								}
+	        				case 9:
+	        		        	String regex_account = "^[a-zA-Z0-9]{5,20}$";
+	        					Pattern p_account = Pattern.compile(regex_account);
+	        					Matcher m_account = p_account.matcher(text);
+	        		        	if(!bllQuanLyDanhSach.kiemTraTenTK(text)){
+	        		        		return "Tài khoản không được trùng lập, lỗi tại ô: "+cell.getAddress();
+	        		        	}
+	        		        	else if(!m_account.matches()) {
+	        		        		return "Tài khoản không được chứa kí tự đặc biệt và phải dài từ 5 đến 20 kí tự!"+ cell.getAddress();
+	        		        	}
+	        		        	else {
+	        		        		tempTaiKhoan.setTaiKhoan(text);
+	        		        	}
+	        					break;
+	        				case 10:
+	        					String regex_pass = "^(?=.*[0-9])(?=.*[a-zA-Z]).{6,20}$";
+	        		        	Pattern p_pass = Pattern.compile(regex_pass);
+	        					Matcher m_pass = p_pass.matcher(text);
+	        		        	if(!m_pass.matches()) {
+	        		                return "Mật khẩu phải dài hơn 6 kí tự bao gồm cả chữ và số, lỗi tại ô: " + cell.getAddress();
+	        		        	}
+	        		        	else {
+	        		        		tempTaiKhoan.setMatKhau(text);
+	        		        	}
+	        					break;
+	        				case 11:
+	        					String regex_MaTK = "^TK\\d{3}$";
+	        					Pattern p_MaTK = Pattern.compile(regex_MaTK);
+	        					Matcher m_MaTK = p_MaTK.matcher(text);
+	        					if (text.length()!=5) {
+	        						return "Mã tài khoản bắt buộc phải có 5 kí tự, lỗi tại ô: " + cell.getAddress();
+	        					}
+	        					else if (!m_MaTK.matches()) {
+	        						return "Mã tài khoản phải có TK và 3 số bất kì vd: TK001, TK999, lỗi tại ô: "+cell.getAddress();
+	        					}
+	        					else if (kiemTraMaTK(text)) {
+	        						return "Mã tài khoản đã tồn tại, lỗi tại ô: "+ cell.getAddress();
+	        					}
+	        					else {
+	        						tempTaiKhoan.setIDTaiKhoan(text);
+	        					}
+	        					break;
+		        			default:
+		        				break;
+		        			}
+	        			
+	        			}
+	        			
+	//        			System.out.print(" "+cell.getStringCellValue());
+	        		}
+	        		dsNV.add(tempNhanVien);
+	      	      	dsTaiKhoan.add(tempTaiKhoan);
+	//        		System.out.println();
+	        	}
+	        }
+	        else {
+				return kiemTraCacCotNhapVao(sheet, ds);
+			}
+	      
+		return "Kiểm tra dữ liệu thành công!";
+	}
 	//kiểm tra các tên cột
 	public String kiemTraCacCotNhapVao(XSSFSheet sheet, String ds) {
 	    // Lấy dòng đầu tiên từ sheet có dữ liệu

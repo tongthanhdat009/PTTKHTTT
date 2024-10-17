@@ -3,7 +3,6 @@ package GUI.CONTROLLER;
 import java.awt.Color;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -18,20 +17,13 @@ import java.util.ArrayList;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.commons.math3.genetics.Fitness;
-import org.apache.poi.examples.hssf.usermodel.NewLinesInCells;
-import org.apache.poi.sl.usermodel.Sheet;
-import org.apache.poi.ss.formula.functions.IfFunc;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import BLL.BLLImportExcel;
-import BLL.BLLXuatFileExcel;
 import DTO.DTOTaiKhoan;
 import DTO.HoiVien;
-import GUI.renderer;
+import DTO.NhanVien;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -147,7 +139,7 @@ public class ImportExcelCTR extends JPanel {
 				    pathNameTF.setText(selectedFile.toString());
 				    for (int i = sheetChooser.getItemCount() - 1; i >= 0; i--) {
 		                if (!sheetChooser.getItemAt(i).toString().equals("Chọn sheet")) {
-		                    sheetChooser.removeItemAt(i); // Sử dụng removeItemAt để xóa theo chỉ số
+		                    sheetChooser.removeItemAt(i); 
 		                }
 		            }
 					excelReader(sheetChooser, selectedFile.toString());
@@ -197,6 +189,7 @@ public class ImportExcelCTR extends JPanel {
 							}
 							else if(listChooser.getSelectedItem().equals("Nhân viên")) {
 								System.out.println("Tạo bảng nhân viên");
+								taoBangNV("Nhân viên", bllImportExcel, dataPanel);
 							}
 						}
 						else if (choice == 1){
@@ -226,6 +219,68 @@ public class ImportExcelCTR extends JPanel {
 	        e.printStackTrace();
 	    }
 	}
+	public void taoBangNV(String ds, BLLImportExcel bllImportExcel, JPanel datJPanel) {
+		XSSFSheet sheet = null;
+		try (FileInputStream fileInputStream = new FileInputStream(pathNameTF.getText());
+			XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream)) {
+			sheet = workbook.getSheet(sheetChooser.getSelectedItem().toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		JTable tempTB = null;
+		DefaultTableModel tableModel = null;
+		if(bllImportExcel.kiemTraDuLieuNV(sheet, ds).equals("Kiểm tra dữ liệu thành công")) {
+			ArrayList<NhanVien> dsNhanVien = bllImportExcel.getDSNhanVien();
+			ArrayList<DTOTaiKhoan> dsTaiKhoan = bllImportExcel.getDSTaiKhoan();
+			ArrayList<String> tenCot = bllImportExcel.getTenCotNV();
+			// Chuyển ArrayList<String> tenCot sang mảng String[]
+		    String[] tenCotStrings = new String[tenCot.size()];
+		    for (int j = 0; j < tenCot.size(); j++) {
+		        tenCotStrings[j] = tenCot.get(j);
+		    }
+
+		    // Khởi tạo DefaultTableModel với tiêu đề cột
+		    tableModel = new DefaultTableModel(tenCotStrings, 0);
+		    if (dsNhanVien.size() == dsTaiKhoan.size()) {
+		    	for (int i = 0; i < dsNhanVien.size(); i++) {
+		        	if(dsNhanVien.get(i).getMaNhanVien().equals("NULL")) {
+		        		continue;
+		        	}
+		            tableModel.addRow(new Object[]{
+		                dsNhanVien.get(i).getMaNhanVien(),
+		                dsNhanVien.get(i).getHoten(),
+		                dsNhanVien.get(i).getGioitinh(),
+		                dsNhanVien.get(i).getNgaysinh(),
+		                dsNhanVien.get(i).getSdt(),
+		                dsNhanVien.get(i).getSocccd(),
+		                dsNhanVien.get(i).getMacoso(),
+		                dsNhanVien.get(i).getVaitro(),
+		                dsNhanVien.get(i).getLuong(),
+		                dsTaiKhoan.get(i).getTaiKhoan(),
+		                dsTaiKhoan.get(i).getMatKhau(),
+		                dsTaiKhoan.get(i).getIDTaiKhoan(),
+		            });
+		            System.out.println(dsNhanVien.get(i).getMaNhanVien());
+		        }
+
+		        // Tạo JTable với DefaultTableModel và thêm vào JScrollPane
+		        tempTB = new JTable(tableModel);
+		        tempTB.setBounds(0, 0, 1200, 650);
+		        JScrollPane scrollPane = new JScrollPane(tempTB);
+		        scrollPane.setBounds(0, 0, 1185, 610);
+		        dataPanel.add(scrollPane);
+		        dataPanel.revalidate();
+		        dataPanel.repaint();
+			}
+		    else {
+		        System.out.println("Danh sách Nhân Viên và Tài Khoản không có cùng số lượng!");
+		    }
+		}
+		else {
+			JOptionPane.showMessageDialog(null, bllImportExcel.kiemTraDuLieuNV(sheet, ds),"Import Excel",JOptionPane.ERROR_MESSAGE);
+			 return;
+		}
+	}
 	public void taoBangHV(String ds, BLLImportExcel bllImportExcel, JPanel dataPanel) {
 		XSSFSheet sheet = null;
 		try (FileInputStream fileInputStream = new FileInputStream(pathNameTF.getText());
@@ -254,6 +309,9 @@ public class ImportExcelCTR extends JPanel {
 		    if (dsHoiVien.size() == dsTaiKhoan.size()) {
 		        // Thêm dữ liệu từ dsHoiVien và dsTaiKhoan vào bảng
 		        for (int i = 0; i < dsHoiVien.size(); i++) {
+		        	if(dsHoiVien.get(i).getMaHoiVien().equals("NULL")) {
+		        		continue;
+		        	}
 		            tableModel.addRow(new Object[]{
 		                dsHoiVien.get(i).getMaHoiVien(),
 		                dsHoiVien.get(i).getHoten(),
@@ -265,6 +323,7 @@ public class ImportExcelCTR extends JPanel {
 		                dsTaiKhoan.get(i).getTaiKhoan(),
 		                dsTaiKhoan.get(i).getMatKhau()
 		            });
+		            System.out.println(dsHoiVien.get(i).getMaHoiVien());
 		        }
 
 		        // Tạo JTable với DefaultTableModel và thêm vào JScrollPane
@@ -280,7 +339,7 @@ public class ImportExcelCTR extends JPanel {
 		    }
 		}
 		else {
-			JOptionPane.showMessageDialog(null, bllImportExcel.kiemTraDuLieuHV(sheet, ds),"Export Excel",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, bllImportExcel.kiemTraDuLieuHV(sheet, ds),"Import Excel",JOptionPane.ERROR_MESSAGE);
 			 return;
 		}
 	}
