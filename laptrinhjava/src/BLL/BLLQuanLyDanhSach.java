@@ -1,5 +1,6 @@
 package BLL;
 import java.util.ArrayList;
+import java.util.Map;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Vector;
@@ -32,7 +33,6 @@ import DTO.ThongTinChiTietHangHoa;
 import DTO.Xa;
 import DTO.dichVu;
 import DTO.dsHangHoa;
-import DTO.dsHoiVien;
 import DTO.hangHoa;
 import DTO.hangHoaCoSo;
 
@@ -105,7 +105,7 @@ public class BLLQuanLyDanhSach{
     public boolean suaThongTinHV(HoiVien a){
         return dataHoiVien.sua(a);
     }
-    public dsHoiVien timKiemHoiVien(HoiVien a) {
+    public Map<String, ArrayList<?>> timKiemHoiVien(ArrayList<String> a) {
         return dataHoiVien.timKiem(a);
     }
     
@@ -114,7 +114,7 @@ public class BLLQuanLyDanhSach{
     }
 
     public boolean kiemTraSDT(String a){
-        if(a.matches("(0[3|5|7|8|9])+([0-9]{8})\\b")){
+        if(a.matches("^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5]|9[0-9])[0-9]{7}$")){
             return true;
         }
         return false;
@@ -163,6 +163,15 @@ public class BLLQuanLyDanhSach{
     }
     public boolean suaThongTinCS(CoSo cs){
         return dataCoSo.suaThongTinCS(cs);
+    }
+    public boolean kiemTraTonTaiSDTCoSo(String sdt) {
+    	return dataCoSo.kiemTraTonTaiSDT(sdt);
+    }
+    public boolean kiemTraTonTaiTenCoSo(String tenCS) {
+    	return dataCoSo.kiemTraTonTaiTenCoSo(tenCS);
+    }
+    public boolean kiemTraTonTaiDiaChi(String diaChi) {
+    	return dataCoSo.kiemTraTonTaiDiaChi(diaChi);
     }
     //danh sách thiết bị
     public DSLoaiThietBi layDSLoaiThietBiKhac(){
@@ -459,8 +468,8 @@ public class BLLQuanLyDanhSach{
     }
 
     // Tìm kiếm nhân viên
-    public ArrayList<NhanVien> timKiemNV(NhanVien nv) {
-        return dataNhanVien.timkiemnhanvien(nv);
+    public Map<String, ArrayList<?>> timKiemNV(NhanVien nv, DTOTaiKhoan tk) {
+        return dataNhanVien.timkiemnhanvien(nv,tk);
     }
     
     // Danh sách dịch vụ
@@ -473,17 +482,22 @@ public class BLLQuanLyDanhSach{
     public String layMaDichVuchuaTonTai() {
     	return dataDichVu.taoMaDichvuMoi();
     }
-    public boolean themDV(dichVu dv) {
+    public String themDV(dichVu dv) {
+        if(dataDichVu.kiemTraTonTaiKhiThemTenDichVu(dv.getTenDichVu())) return "Tên dịch vụ đã tồn tại";
     	return dataDichVu.themDV(dv);
     }
     public boolean xoaDV(String madv) {
     	return dataDichVu.xoaDV(madv);
     }
-    public boolean suaDV(dichVu dv) {
+    public String suaDV(dichVu dv) {
+        if(kiemTraTonTaiTenDichVu(dv.getTenDichVu(),dv.getMaDichVu())) return "Tên dịch vụ đã tồn tại";
     	return dataDichVu.suaDV(dv);
     }
-    public ArrayList<dichVu> timKiemDV (String madv){
-    	return dataDichVu.timkiemDV(madv);
+    public ArrayList<dichVu> timKiemDV (String tenDV, String gia){
+    	return dataDichVu.timkiemDV(tenDV,gia);
+    }
+    public boolean kiemTraTonTaiTenDichVu(String tenDv, String ma){
+        return dataDichVu.kiemTraTonTaiTenDichVu(tenDv, ma);
     }
     public ArrayList<hangHoaCoSo> layDSHangHoaCoSo()
     {
@@ -511,11 +525,12 @@ public class BLLQuanLyDanhSach{
     public String suaHangHoaCoSo(String maCoSo, String maHangHoa, String trangThai)
     {
         if(dataHangHoaCoSo.sua(maCoSo,  maHangHoa, trangThai)) 
-        	return "Thành công";
-        return "Bộ không tồn tại";
+        	return "Sửa thông tin thành công";
+        return "Sửa thông tin không thành công";
     }
     public String themThietBiTa(Ta ta)
     {
+        
         if(ta.getKhoiLuong()<=0) return "Sai khối lượng";
         String ma = dataThietBi.layMaChuaTonTai();
         if(dataHangHoa.themHangHoa(new hangHoa(ma, ta.getLoaiHangHoa(), ta.getTenLoaiHangHoa(), ta.getHinhAnh()))) 

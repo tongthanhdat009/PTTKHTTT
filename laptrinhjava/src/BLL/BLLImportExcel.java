@@ -3,7 +3,6 @@ package BLL;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +18,6 @@ import DAL.DataTaiKhoan;
 import DTO.DTOTaiKhoan;
 import DTO.HoiVien;
 import DTO.NhanVien;
-import DTO.dsHoiVien;
 
 public class BLLImportExcel {
     private ArrayList<String> tenCotHV = new ArrayList<String>();
@@ -103,7 +101,7 @@ public class BLLImportExcel {
 	        if(kiemTraCacCotNhapVao(sheet, ds).equals("Kiểm tra tên cột thành công !")) {
 	        	for(int i=1;i<=sheet.getLastRowNum();i++) {
 	        		HoiVien tempHoiVien = new HoiVien();
-	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001");
+	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001","");
 	        		XSSFRow row = sheet.getRow(i);
 	        		for(int j=0;j<tenCotHV.size();j++) {
 	        			if(row == null) {
@@ -185,6 +183,7 @@ public class BLLImportExcel {
 	        					}
 	        					else {
 	        						tempTaiKhoan.setIDTaiKhoan(text);
+	        						tempHoiVien.setIDTaiKhoan(text);
 								}
 	        					break;
 	        				case 5:
@@ -286,7 +285,7 @@ public class BLLImportExcel {
 	        if(kiemTraCacCotNhapVao(sheet, ds).equals("Kiểm tra tên cột thành công !")) {
 	        	for(int i=1;i<=sheet.getLastRowNum();i++) {
 	        		NhanVien tempNhanVien = new NhanVien();
-	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001");
+	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001","");
 	        		XSSFRow row = sheet.getRow(i);
 	        		for(int j=0;j<tenCotNV.size();j++) {
 	        			if(row == null) {
@@ -429,11 +428,12 @@ public class BLLImportExcel {
 								break;
 	        				case 7:
 	        					if(text.trim().equals("Nhân viên") || text.trim().equals("Quản lý")) {
+	        						tempNhanVien.setVaitro(text);
 	        						if(text.equals("Nhân viên")) {
-	        							tempNhanVien.setVaitro(text);
+	        							tempTaiKhoan.setIDQuyen("Q0002");
 	        						}
-	        						else if(text.equals("Quản lý")) {
-	        							tempNhanVien.setVaitro(text);
+	        						if(text.equals("Quản lý")) {
+	        							tempTaiKhoan.setIDQuyen("Q0003");
 	        						}
 	        					}
 	        					else {
@@ -495,6 +495,7 @@ public class BLLImportExcel {
 	        					}
 	        					else {
 	        						tempTaiKhoan.setIDTaiKhoan(text);
+	        						tempNhanVien.setIDTaiKhoan(text);
 	        					}
 	        					break;
 		        			default:
@@ -590,16 +591,16 @@ public class BLLImportExcel {
 	public void themDuLieuVaoHVCSDL() {
 		DataHoiVien dataHoiVien = new DataHoiVien();
 		for (int i = 0;i<dsHV.size();i++) {
-			dataHoiVien.them(dsHV.get(i));
 			dataTaiKhoan.themTK(dsTaiKhoan.get(i));
+			dataHoiVien.them(dsHV.get(i));
 		}
 	}
 	
 	public void themDuLieuVaoNVCSDL() {
 		DataNhanVien dataNhanVien = new DataNhanVien();
 		for (int i=0; i<dsNV.size();i++) {
-			dataNhanVien.them(dsNV.get(i));
 			dataTaiKhoan.themTK(dsTaiKhoan.get(i));
+			dataNhanVien.them(dsNV.get(i));
 		}
 	}
 }

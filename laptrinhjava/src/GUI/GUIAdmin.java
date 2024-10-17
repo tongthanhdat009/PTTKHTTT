@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import BLL.BLLDangNhap;
 import BLL.BLLDonNhap;
 import BLL.BLLQuanLyDanhSach;
 import DTO.DTOQuyen;
@@ -150,6 +151,8 @@ public class GUIAdmin{
     
     public String curr_user = new String();
     
+    public BLLDangNhap bllDangNhap = new BLLDangNhap();
+
     public GUIAdmin(DTOTaiKhoan tk, String coSoHienTai){    
 //    	người dùng hiện tại
     	this.curr_user = "Admin";
@@ -157,9 +160,29 @@ public class GUIAdmin{
         adminFrame.setSize(width, height);
         adminFrame.setLocationRelativeTo(null);
         adminFrame.setResizable(false);
-        adminFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        adminFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         adminFrame.getContentPane().setLayout(null);
         adminFrame.setIconImage(logo.getImage());
+         // Thêm WindowListener để theo dõi sự kiện đóng cửa sổ
+        adminFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                tk.setStatus("OFF");
+                // Xử lý khi JFrame đang được đóng
+                // Có thể hỏi người dùng trước khi đóng
+                // Thực sự đóng JFrame
+                if(bllDangNhap.suaTrangThaiTK(tk)){
+                    System.out.println("JFrame đã bị đóng!");
+                    adminFrame.dispose();
+                    new GUILogin();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Trạng thái tài khoản chưa được thay đổi","Error",JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                adminFrame.dispose();
+            }
+        });
         mainPanel.setLocation(0, 0);
 
         //main
@@ -438,35 +461,30 @@ public class GUIAdmin{
         
         JButton importExcelBTN = new JButton("Nhập file danh sách");
         importExcelBTN.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
+            public void actionPerformed(ActionEvent e) {
+                rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
                 rightPanel.revalidate(); // Cập nhật lại JPanel để hiển thị thay đổi
                 rightPanel.repaint(); // Vẽ lại JPanel
-        		rightPanel.setLayout(null);
-        		ImportExcelCTR importExcelCTR = new ImportExcelCTR();
-        		rightPanel.add(importExcelCTR);
-        	}
+                rightPanel.setLayout(null);
+                ImportExcelCTR importExcelCTR = new ImportExcelCTR();
+                rightPanel.add(importExcelCTR);
+            }
         });
         importExcelBTN.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 23));
         importExcelBTN.setBounds(23, 460, 300, 50);
         managementPanel.add(importExcelBTN);
         
-        JButton thongKeBTN = new JButton("Thống kê\r\n");
+        JButton thongKeBTN = new JButton("Thống kê");
         thongKeBTN.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
+            public void actionPerformed(ActionEvent e) {
+                rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
                 rightPanel.revalidate(); // Cập nhật lại JPanel để hiển thị thay đổi
                 rightPanel.repaint(); // Vẽ lại JPanel
-        		rightPanel.setLayout(null);
-        		thongKeCTR thongKeCTR = new thongKeCTR();
-        		rightPanel.add(thongKeCTR);
-        		
-        	}
+                rightPanel.setLayout(null);
+                thongKeCTR thongKeCTR = new thongKeCTR();
+                rightPanel.add(thongKeCTR);
+            }
         });
-        thongKeBTN.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 23));
-        thongKeBTN.setBounds(23, 580, 300, 50);
-        managementPanel.add(thongKeBTN);
-        
        
         //chức năng nhập hàng
         // JButton importgoods = new JButton("Nhập hàng");
@@ -510,8 +528,15 @@ public class GUIAdmin{
         		int result = JOptionPane.showConfirmDialog(mainPanel, "Bạn muốn đăng xuất chứ?");
         		if(result == 0) {
         			System.out.println("Bạn đã đăng xuất");
-        			adminFrame.dispose();
-        			new GUILogin();
+                    tk.setStatus("OFF");
+                    if(bllDangNhap.suaTrangThaiTK(tk)){
+                        adminFrame.dispose();
+                        new GUILogin();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null,"Đăng xuất không thành công!","Error",JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
         		}
         		else {
         			return;

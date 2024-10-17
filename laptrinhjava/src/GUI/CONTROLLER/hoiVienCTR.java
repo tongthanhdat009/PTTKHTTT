@@ -13,6 +13,8 @@ import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,8 +38,6 @@ import javax.swing.table.DefaultTableModel;
 import BLL.BLLQuanLyDanhSach;
 import DTO.DTOTaiKhoan;
 import DTO.HoiVien;
-import DTO.dsHoiVien;
-import GUI.GUISignup;
 import GUI.renderer;
 
 public class hoiVienCTR {
@@ -155,8 +155,6 @@ public class hoiVienCTR {
             }
             else if(i==6){
                 Font font = new Font("Times New Roman", Font.BOLD, 20); // Thay đổi font và kích thước chữ ở đây
-                
-                
                 for(int day=1; day<=31 ;day++){
                     dayCBB.addItem(day);
                 }
@@ -180,7 +178,7 @@ public class hoiVienCTR {
                 yearCBB.setFont(font);
                 yearCBB.setBackground(Color.white);
                 yearCBB.setName("Year");
-                yearCBB.setSelectedItem(2000);
+                yearCBB.setSelectedItem(2024);
 
                 // Listener thay đổi tháng và năm để cập nhật ngày
                 ActionListener updateDaysListener = new ActionListener() {
@@ -225,13 +223,14 @@ public class hoiVienCTR {
         dataTable.getColumnModel().getColumn(9).setCellRenderer(rd);
         
         //nút chức năng
-        String[] cmtNut = {"add", "edit", "Search"};
+        String[] cmtNut = {"add", "edit", "Search","Reset"};
         String[] anhStrings = {
             "src/asset/img/button/them-hv.png",
             "src/asset/img/button/sua-hv.png",
-            "src/asset/img/button/tim-hv.png"
+            "src/asset/img/button/tim-hv.png",
+            "src/asset/img/button/reset-hv.png"
         };
-        int a=335;
+        int a=275;
         for(int i=0;i<cmtNut.length;i++){
             JButton tempBtn = new JButton();
             ImageIcon tempBtnImg = new ImageIcon(anhStrings[i]);
@@ -242,7 +241,7 @@ public class hoiVienCTR {
             tempBtn.setHorizontalAlignment(SwingConstants.CENTER);
             tempBtn.setBorder(null);
             tempBtn.addActionListener(new ActionListener() {
-                @SuppressWarnings("deprecation")
+                @SuppressWarnings({ "deprecation", "unchecked" })
                 public void actionPerformed(ActionEvent e) {
                     if (e.getActionCommand().equals(cmtNut[0])) { //THÊM HỘI VIÊN
                         boolean flag = true; // cờ hiệu gán giá trị cho mã hội viên
@@ -291,7 +290,7 @@ public class hoiVienCTR {
                             	            	return;
 											}
                             				else if (!m_email.matches()) {
-                            					JOptionPane.showMessageDialog(null, "Email không hợp lệ", "Thêm hội viên", JOptionPane.ERROR_MESSAGE);;
+                            					JOptionPane.showMessageDialog(null, "Email không đúng định dạng", "Thêm hội viên", JOptionPane.ERROR_MESSAGE);;
                             	            	return;
                             				}
                             				else {
@@ -419,7 +418,7 @@ public class hoiVienCTR {
                             DTOTaiKhoan tempTK = new DTOTaiKhoan(thongTinMoi.get(4),
                             		thongTinMoi.get(7),
                             		thongTinMoi.get(8),
-                            		"Q0001");
+                            		"Q0001","OFF");
                             if(bllQuanLyDanhSach.themTK(tempTK)&&bllQuanLyDanhSach.themHV(tempHV)){
                                 JOptionPane.showMessageDialog(bangChinhSua, "Thêm thành công hội viên và tài khoản thành công!");
                                 hvList.addRow(thongTinMoi.toArray());
@@ -434,64 +433,7 @@ public class hoiVienCTR {
                             return;
                         }
                     }
-//                    else if (e.getActionCommand().equals(cmtNut[1])) {//XÓA HỘI VIÊN
-//                        int i=dataTable.getSelectedRow();
-//                        if(i>=0){
-//                            Component[] components = bangChinhSua.getComponents();
-//                            hvList.removeRow(i);
-//                            ArrayList<String> maTKVaHV = new ArrayList<String>();
-//                            for (Component component : components) {
-//                                if (component instanceof JPanel) {
-//                                    JPanel tempPanel = (JPanel) component;
-//                                    Component[] smallComponents = tempPanel.getComponents();
-//                                    for (Component smallComponent : smallComponents) {
-//                                        if(smallComponent instanceof JTextField){
-//                                            JTextField textField = (JTextField) smallComponent;
-//                                            if(components[4] == component || components[0] == component){
-//            									maTKVaHV.add(textField.getText().trim());
-//                                            }
-//                                        }
-//                                        
-//                                    }
-//                                }
-//                            }
-//                            if(bllQuanLyDanhSach.xoaHV(maTKVaHV.get(0))&&bllQuanLyDanhSach.xoaTK(maTKVaHV.get(1))) {
-//                                JOptionPane.showMessageDialog(bangChinhSua, "Xóa thành công!");
-//                                for (Component component : components) {
-//                                  if (component instanceof JPanel) {
-//                                      JPanel tempPanel = (JPanel) component;
-//                                      Component[] smallComponents = tempPanel.getComponents();
-//                                      for (Component smallComponent : smallComponents) {
-//                                          if(smallComponent instanceof JTextField){
-//                                              JTextField textField = (JTextField) smallComponent;
-//                                                  textField.setText("");
-//                                          }
-//                                          else if(smallComponent instanceof JComboBox){
-//                                              @SuppressWarnings("rawtypes")
-//                                              JComboBox cb = (JComboBox) smallComponent;
-//                                              if("Day".equals(cb.getName())){
-//                                                  cb.setSelectedItem(1);
-//                                              }
-//                                              if("Month".equals(cb.getName())){
-//                                                  cb.setSelectedItem(1);
-//                                              }
-//                                              if("Year".equals(cb.getName())){
-//                                                  cb.setSelectedItem(2000);
-//                                              }
-//                                          }
-//                                          
-//                                      }
-//                                  
-//                                  }
-//  
-//                              }
-//                            }
-//                            else {
-//                                JOptionPane.showMessageDialog(bangChinhSua, "Xóa không thành công!");
-//                                return;
-//                            }
-//                        }
-//                    } 
+
                     else if (e.getActionCommand().equals(cmtNut[1])) {//SỬA THÔNG TIN HỘI VIÊN
                         int i= dataTable.getSelectedRow();
                         Date date;
@@ -500,10 +442,14 @@ public class hoiVienCTR {
                         String maGoc = new String();
                         String tenGoc = new String();
                         String taiKhoanGoc = new String();
+                        String ngaySinhGoc = new String();
+                        String gioiTinhGoc = new String();
                         if (i>=0){
-                        	maGoc = hvList.getValueAt(i, 0).toString();
+                        	maGoc = hvList.getValueAt(i, 0).toString().trim();
                         	tenGoc = hvList.getValueAt(i, 1).toString();
                         	taiKhoanGoc = hvList.getValueAt(i, 7).toString().trim();
+                        	ngaySinhGoc = hvList.getValueAt(i, 6).toString().trim();
+                        	gioiTinhGoc = hvList.getValueAt(i, 2).toString().trim();
                         	System.out.println(taiKhoanGoc);
                             int countDate = 0;
                             Component[] components = bangChinhSua.getComponents();
@@ -535,23 +481,23 @@ public class hoiVienCTR {
                                                 countDate++;
                                             }
                                             if(countDate == 3){
-                                            	//Kiểm tra 18 tuổi
-                                                int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-                                        		int currentDay = Calendar.getInstance().get(Calendar.DATE);
-                                        		int currentMonth = Calendar.getInstance().get(Calendar.MONTH)+1;
-                                				if (currentYear - year < 18) {
-                                				    JOptionPane.showMessageDialog(null, "Tuổi của hội viên chưa đủ 18, vui lòng kiểm tra lại!", "Error", JOptionPane.ERROR_MESSAGE);
-                                				    return;
-                                				} 
-                                				else if (currentYear - year == 18) {
-                                				    // Kiểm tra tháng và ngày
-                                				    if (currentMonth < month || (currentMonth == month && currentDay < day)) {
-                                				    	System.out.println((currentDay) + " " + day);				    
-                                				        JOptionPane.showMessageDialog(null, "Tuổi của hội viên chưa đủ 18, vui lòng kiểm tra lại!", "Error", JOptionPane.ERROR_MESSAGE);
-                                				        return;
-                                				    }
-                                				}
-                            					thongTinMoi.add(year+"-"+month+"-"+day);
+//                                            	//Kiểm tra 18 tuổi
+//                                                int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+//                                        		int currentDay = Calendar.getInstance().get(Calendar.DATE);
+//                                        		int currentMonth = Calendar.getInstance().get(Calendar.MONTH)+1;
+//                                				if (currentYear - year < 18) {
+//                                				    JOptionPane.showMessageDialog(null, "Tuổi của hội viên chưa đủ 18, vui lòng kiểm tra lại!", "Error", JOptionPane.ERROR_MESSAGE);
+//                                				    return;
+//                                				} 
+//                                				else if (currentYear - year == 18) {
+//                                				    // Kiểm tra tháng và ngày
+//                                				    if (currentMonth < month || (currentMonth == month && currentDay < day)) {
+//                                				    	System.out.println((currentDay) + " " + day);				    
+//                                				        JOptionPane.showMessageDialog(null, "Tuổi của hội viên chưa đủ 18, vui lòng kiểm tra lại!", "Error", JOptionPane.ERROR_MESSAGE);
+//                                				        return;
+//                                				    }
+//                                				}
+                            					thongTinMoi.add(String.format("%d-%d-%d",year,month,day));
                                 				countDate=0;
                                             }
                                         }
@@ -567,14 +513,25 @@ public class hoiVienCTR {
                                     }
                                 }
                             }
+                            System.out.println(thongTinMoi +" "+ gioiTinhGoc);
+                            if(!thongTinMoi.get(2).equals(gioiTinhGoc)) {
+                            	JOptionPane.showMessageDialog(null, "Không được sửa giới tính hội viên","Sửa thông tin", JOptionPane.ERROR_MESSAGE);
+                            	return;
+                            }
+                            //thông báo không cho chỉnh ngày sinh hội viên
+                            if(!ngaySinhGoc.equals(thongTinMoi.get(6))) {
+                            	JOptionPane.showMessageDialog(null, "Không được sửa ngày sinh của hội viên vui lòng chỉnh lại đúng ngày!","Sửa thông tin", JOptionPane.ERROR_MESSAGE);
+                            	return;
+                            }
                             
-                            String matKhau = thongTinMoi.get(8);
+                            String matKhau = thongTinMoi.get(8).trim();
                             //regex mật khẩu
                             String regex_pass = "^(?=.*[0-9])(?=.*[a-zA-Z]).{6,20}$";
                             Pattern p_pass = Pattern.compile(regex_pass);
                             Matcher m_pass = p_pass.matcher(matKhau);
+                            System.out.println(matKhau);
                             if(!m_pass.matches()){
-                            	JOptionPane.showMessageDialog(null, "Mật khẩu phải dài hơn 6 kí tự bao gồm cả chữ và số!", "Sửa thông tin", JOptionPane.ERROR_MESSAGE);
+                            	JOptionPane.showMessageDialog(null, "Mật khẩu phải dài từ 6 đến 20 kí tự bao gồm cả chữ và số!", "Sửa thông tin", JOptionPane.ERROR_MESSAGE);
                             	return;
                             }
                             
@@ -587,7 +544,7 @@ public class hoiVienCTR {
             	            	return;
 							}
             				else if (!m_email.matches()) {
-            					JOptionPane.showMessageDialog(null, "Email không hợp lệ", "Thêm hội viên", JOptionPane.ERROR_MESSAGE);;
+            					JOptionPane.showMessageDialog(null, "Email không đúng định dạng", "Thêm hội viên", JOptionPane.ERROR_MESSAGE);;
             	            	return;
             				}
 
@@ -622,7 +579,7 @@ public class hoiVienCTR {
                                 DTOTaiKhoan tempTK = new DTOTaiKhoan(thongTinMoi.get(4),
                                 		thongTinMoi.get(7),
                                 		thongTinMoi.get(8),
-                                		"Q0001");
+                                		"Q0001","OFF");
                                 if (bllQuanLyDanhSach.suaThongTinTK(tempTK)&&bllQuanLyDanhSach.suaThongTinHV(tempHV)) {
                                     JOptionPane.showMessageDialog(null, "Sửa thông tin thành công", "Sửa thông tin", JOptionPane.DEFAULT_OPTION);
                                     for (int j=0;j<thongTinMoi.size();j++) {
@@ -649,8 +606,9 @@ public class hoiVienCTR {
                         ArrayList<String> thongTin = new ArrayList<String>();
                         Component[] components = bangChinhSua.getComponents();
                         int day=1, month=1, year=2000;
-                        Date date = new Date(year-1900, month-1, day);
+                        // Date date = new Date(year-1900, month-1, day);
                         int dateCount = 0;
+                        int gioiTinhTrong = 0;
                         for(Component component : components) {
                             if(component instanceof JPanel){
                                 JPanel panel = (JPanel) component;
@@ -669,6 +627,11 @@ public class hoiVienCTR {
                                         JRadioButton tempRB = (JRadioButton)smallComponent;
                                         if(tempRB.isSelected()){
                                             thongTin.add(tempRB.getText().toString());
+                                        }else {
+                                        	gioiTinhTrong ++;
+                                        }
+                                        if(gioiTinhTrong == 2) {
+                                        	thongTin.add("");
                                         }
                                     }
                                     if(smallComponent instanceof JComboBox){
@@ -688,61 +651,80 @@ public class hoiVienCTR {
                                         }
                                         if(dateCount == 3){
                                             thongTin.add(year+"-"+month+"-"+day);
-                                            date = new Date(year-1900, month-1, day);
+                                            // date = new Date(year-1900, month-1, day);
                                         }
                                     }
                                 }
                             }
                         }
-                        if(thongTin.size()>=10){
-                        	System.out.println(thongTin);
-                        	HoiVien tempHV = new HoiVien(thongTin.get(0),
-		                            thongTin.get(1),
-		                            thongTin.get(2),
-		                            thongTin.get(3),
-		                            date,
-		                            thongTin.get(5),
-		                            thongTin.get(4),
-		                            thongTin.get(9));
-                            if(bllQuanLyDanhSach.timKiemHoiVien(tempHV).dsHV.size() != 0 && bllQuanLyDanhSach.timKiemTKHV(tempHV).size() != 0){
-                                JOptionPane.showMessageDialog(bangChinhSua, "Tìm kiếm thành công","Tìm kiếm hội viên", JOptionPane.INFORMATION_MESSAGE);
-                                ArrayList<DTOTaiKhoan> dsTK2 = bllQuanLyDanhSach.timKiemTKHV(tempHV);
-                                dsHoiVien dsHV2 = bllQuanLyDanhSach.timKiemHoiVien(tempHV);
-                                hvList.setRowCount(0);
-                                for (int i = 0; i < dsHV2.dsHV.size(); i++) {
-                                    hvList.addRow(new Object[]{dsHV2.dsHV.get(i).getMaHoiVien(),
-                                        dsHV2.dsHV.get(i).getHoten().trim(),
-                                        dsHV2.dsHV.get(i).getGioitinh().trim(),
-                                        dsHV2.dsHV.get(i).getMail().trim(),
-                                        dsHV2.dsHV.get(i).getIDTaiKhoan().trim(),
-                                        dsHV2.dsHV.get(i).getSdt().trim(),
-                                        dsHV2.dsHV.get(i).getNgaysinh().trim(),
-                                        dsTK2.get(i).getTaiKhoan().trim(),
-                                        dsTK2.get(i).getMatKhau().trim(),
-                                        dsHV2.dsHV.get(i).getAnh()});
-                                }
-                            }
-                            else{
-                                JOptionPane.showMessageDialog(bangChinhSua, "Vui lòng nhập thêm hoặc kiểm tra lại thông tin để có được kết quả tìm kiếm chính xác","Tìm kiếm hàng hóa", JOptionPane.ERROR_MESSAGE);
-                                for (int i = 0; i < dsHV.size(); i++) {
-                                    hvList.addRow(new Object[]{dsHV.get(i).getMaHoiVien(),
+                        if(bllQuanLyDanhSach.timKiemHoiVien(thongTin) != null) {
+                        	Map<String, ArrayList<?>> testMap = bllQuanLyDanhSach.timKiemHoiVien(thongTin);
+                        	ArrayList<HoiVien> dsHV = new ArrayList<HoiVien> ();
+                        	ArrayList<DTOTaiKhoan> dsTK = new ArrayList<DTOTaiKhoan>();
+                        	for (Entry<String, ArrayList<?>> entry : testMap.entrySet()) {
+                        		String key = entry.getKey(); // Lấy khóa
+                        		ArrayList<?> value = entry.getValue(); // Lấy giá trị
+                        		if (key.equals("TaiKhoan")) {
+                        			dsTK = (ArrayList<DTOTaiKhoan>) value;
+                        		}
+                        		else if(key.equals("HoiVien")){
+                        			dsHV = (ArrayList<HoiVien>)value;
+                        		}
+                        	}
+                        	hvList.setRowCount(0);
+                        	for(int i=0;i<dsHV.size();i++) {
+                        		hvList.addRow(new Object[]{dsHV.get(i).getMaHoiVien(),
                                         dsHV.get(i).getHoten().trim(),
                                         dsHV.get(i).getGioitinh().trim(),
                                         dsHV.get(i).getMail().trim(),
-                                        dsHV.get(i).getIDTaiKhoan().trim(),
+                                        dsTK.get(i).getIDTaiKhoan().trim(),
                                         dsHV.get(i).getSdt().trim(),
                                         dsHV.get(i).getNgaysinh().trim(),
                                         dsTK.get(i).getTaiKhoan().trim(),
                                         dsTK.get(i).getMatKhau().trim(),
-                                        dsHV.get(i).getAnh()});
-                                }
-                            }
+                                        dsHV.get(i).getAnh(),
+                                        });
+                        	}
                         }
-                        else{
-                            JOptionPane.showMessageDialog(bangChinhSua, "Thiếu thông tin vui lòng chọn thêm giới tính","Thiếu thông tin", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        } 
+                        else {
+                        	JOptionPane.showMessageDialog(null, "Không có kết quả cần tìm!", "Tìm kiếm", JOptionPane.INFORMATION_MESSAGE);
+                        	return;
+                        }
                     }
+		            else if (e.getActionCommand().equals(cmtNut[3])) {
+		            	rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
+		                rightPanel.revalidate(); // Cập nhật lại JPanel để hiển thị thay đổi
+		                rightPanel.repaint(); // Vẽ lại JPanel
+		        		rightPanel.setLayout(null);
+//		        		BLLQuanLyDanhSach bllQuanLyDanhSach = new BLLQuanLyDanhSach();
+//		        		ArrayList<HoiVienCoSo> ds = new ArrayList<>();
+//		                Vector<String> dsCoSo = new Vector<>();
+//		                dsCoSo = bllQuanLyDanhSach.layDSMaCoSo();
+//		                ds = bllQuanLyDanhSach.layDSHoiVienCoSo();
+//		                QuanLyHoiVienCoSoCTR qlhvcsCTR = new QuanLyHoiVienCoSoCTR();
+//		                qlhvcsCTR.QuanLyHoiVienCoSo(ds,dsCoSo,rightPanel);
+//		                
+		                JTable dataTable = new JTable();
+		                JScrollPane scrollPane = new JScrollPane();
+		                JPanel bangChinhSua = new JPanel();
+		                
+		                BLLQuanLyDanhSach bllQuanLyDanhSach = new BLLQuanLyDanhSach();
+
+		                ArrayList<String> tenCotHV = new ArrayList<String>();
+		                ArrayList<HoiVien> dsHV = bllQuanLyDanhSach.getDataHoiVien();
+		                tenCotHV.add("Mã hội viên");
+		                tenCotHV.add("Họ tên hội viên");
+		                tenCotHV.add("Giới tính");
+		                tenCotHV.add("Gmail");
+		                tenCotHV.add("Mã Tài khoản");
+		                tenCotHV.add("Số điện thoại");
+		                tenCotHV.add("Ngày sinh");
+		                tenCotHV.add("Tài khoản");
+		                tenCotHV.add("Mật khẩu");
+		                tenCotHV.add("Ảnh đại diện");
+		                hoiVienCTR hvCTR = new hoiVienCTR(rightPanel,tenCotHV,dsHV,bangChinhSua,dataTable,scrollPane,bllQuanLyDanhSach);
+		                hvCTR.update();
+		            } 
                 }
             });
             a+=175;
@@ -805,6 +787,8 @@ public class hoiVienCTR {
                                         cb.setSelectedItem(year);
                                     }
                                 }
+                                
+
                             }
                         j++;
                         }
