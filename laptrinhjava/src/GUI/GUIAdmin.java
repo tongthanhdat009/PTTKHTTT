@@ -474,17 +474,21 @@ public class GUIAdmin{
         importExcelBTN.setBounds(23, 460, 300, 50);
         managementPanel.add(importExcelBTN);
         
-        JButton thongKeBTN = new JButton("Thống kê");
-        thongKeBTN.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
+        JButton statisticalBTN = new JButton("Thống kê");
+        statisticalBTN.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
                 rightPanel.revalidate(); // Cập nhật lại JPanel để hiển thị thay đổi
                 rightPanel.repaint(); // Vẽ lại JPanel
                 rightPanel.setLayout(null);
-                thongKeCTR thongKeCTR = new thongKeCTR();
-                rightPanel.add(thongKeCTR);
-            }
+        		thongKeCTR tkCTR = new thongKeCTR();
+        		rightPanel.add(tkCTR);
+        		System.out.println("CMM");
+        	}
         });
+        statisticalBTN.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 23));
+        statisticalBTN.setBounds(23, 580, 300, 50);
+        managementPanel.add(statisticalBTN);
        
         //chức năng nhập hàng
         // JButton importgoods = new JButton("Nhập hàng");
