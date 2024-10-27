@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
+import javax.swing.border.LineBorder;
 
 public class thongKeCTR extends JPanel{
 	/**
@@ -44,7 +45,9 @@ public class thongKeCTR extends JPanel{
 		add(title);
 		
 		JPanel selectPN = new JPanel();
-		selectPN.setBounds(0, 76, 1200, 37);
+		selectPN.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		selectPN.setBackground(new Color(119, 230, 160));
+		selectPN.setBounds(0, 76, 1200, 45);
 		add(selectPN);
 		selectPN.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
@@ -62,6 +65,7 @@ public class thongKeCTR extends JPanel{
 		csCBB.setVisible(false);
 		
 		JButton acceptBTN = new JButton("Xác nhận");
+		acceptBTN.setBackground(new Color(255, 255, 255));
 		acceptBTN.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 		acceptBTN.setVisible(false);
 		
@@ -70,6 +74,7 @@ public class thongKeCTR extends JPanel{
 		monthStartLB.setVisible(false);
 		
 		JComboBox<Integer> monthStart = new JComboBox<Integer>();
+		monthStart.setBackground(new Color(255, 255, 255));
 		monthStartLB.setLabelFor(monthStart);
 		monthStart.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		monthStart.setVisible(false);
@@ -79,6 +84,7 @@ public class thongKeCTR extends JPanel{
 		yearStartLB.setVisible(false);
 		
 		JComboBox<Integer> yearStart = new JComboBox<Integer>();
+		yearStart.setBackground(new Color(255, 255, 255));
 		yearStartLB.setLabelFor(yearStart);
 		yearStart.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		yearStart.setVisible(false);
@@ -88,6 +94,7 @@ public class thongKeCTR extends JPanel{
 		monthEndLB.setVisible(false);
 		
 		JComboBox<Integer> monthEnd = new JComboBox<Integer>();
+		monthEnd.setBackground(new Color(255, 255, 255));
 		monthEndLB.setLabelFor(monthEnd);
 		monthEnd.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		monthEnd.setVisible(false);
@@ -97,6 +104,7 @@ public class thongKeCTR extends JPanel{
 		yearEndLB.setVisible(false);
 		
 		JComboBox<Integer> yearEnd = new JComboBox<Integer>();
+		yearEnd.setBackground(new Color(255, 255, 255));
 		yearEndLB.setLabelFor(yearEnd);
 		yearEnd.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		yearEnd.setVisible(false);
@@ -110,7 +118,12 @@ public class thongKeCTR extends JPanel{
             yearStart.addItem(year);
             yearEnd.addItem(year);
         }		
+		JPanel chartPN = new JPanel();
+		chartPN.setBackground(new Color(241, 255, 250));
+		chartPN.setBounds(0, 124, 1200, 776);
+		add(chartPN);
 		JComboBox<String> typeCBB = new JComboBox<String>();
+		typeCBB.setBackground(new Color(255, 255, 255));
 		typeCBB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(typeCBB.getSelectedItem().equals("Chọn cách thống kê")) {
@@ -125,80 +138,174 @@ public class thongKeCTR extends JPanel{
 					monthEnd.setVisible(false);
 					acceptBTN.setVisible(false);
 				}
-				if(typeCBB.getSelectedItem().toString().equals("Thống kê tổng doanh thu")) {
-					System.out.print("Thống kê tổng doanh thu");
-					yearEndLB.setVisible(false);
-					yearEnd.setVisible(false);
-					yearStart.setVisible(false);
-					yearStartLB.setVisible(false);
-					monthStartLB.setVisible(false);
-					monthStart.setVisible(false);
-					monthEndLB.setVisible(false);
-					monthEnd.setVisible(false);
-					acceptBTN.setVisible(true);
-				}
-				if(typeCBB.getSelectedItem().toString().equals("Thống kê tổng chi phí")) {
-					System.out.print("Thống kê tổng chi phí");
-					yearEndLB.setVisible(false);
-					yearEnd.setVisible(false);
-					yearStartLB.setVisible(false);
-					yearStart.setVisible(false);
-					monthStartLB.setVisible(false);
-					monthStart.setVisible(false);
-					monthEndLB.setVisible(false);
-					monthEnd.setVisible(false);
-					acceptBTN.setVisible(true);
-				}
-				if(typeCBB.getSelectedItem().toString().equals("Thống kê doanh thu theo tháng")) {
-					System.out.print("Thống kê doanh thu theo tháng");
-					yearEndLB.setVisible(true);
-					yearEnd.setVisible(true);
-					yearStartLB.setVisible(true);
-					yearStart.setVisible(true);
-					monthStartLB.setVisible(true);
-					monthStart.setVisible(true);
-					monthEndLB.setVisible(true);
-					monthEnd.setVisible(true);
-					acceptBTN.setVisible(true);
+				else {
+					 for (ActionListener al : acceptBTN.getActionListeners()) {
+			                acceptBTN.removeActionListener(al);
+			            }
+					if(typeCBB.getSelectedItem().toString().equals("Thống kê tổng doanh thu")) {
+						yearEndLB.setVisible(false);
+						yearEnd.setVisible(false);
+						yearStart.setVisible(false);
+						yearStartLB.setVisible(false);
+						monthStartLB.setVisible(false);
+						monthStart.setVisible(false);
+						monthEndLB.setVisible(false);
+						monthEnd.setVisible(false);
+						acceptBTN.setVisible(true);
+						acceptBTN.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								chartPN.removeAll();
+								thongKeTheoDoanhThu tkdt = new thongKeTheoDoanhThu(maCS);
+								chartPN.add(tkdt);
+								chartPN.revalidate();
+								chartPN.repaint();
+							}
+						});
+					}
+					if(typeCBB.getSelectedItem().toString().equals("Thống kê tổng chi phí")) {
+						yearEndLB.setVisible(false);
+						yearEnd.setVisible(false);
+						yearStartLB.setVisible(false);
+						yearStart.setVisible(false);
+						monthStartLB.setVisible(false);
+						monthStart.setVisible(false);
+						monthEndLB.setVisible(false);
+						monthEnd.setVisible(false);
+						acceptBTN.setVisible(true);
+						acceptBTN.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								chartPN.removeAll();
+								thongKeTheoChiPhi tkcp = new thongKeTheoChiPhi(maCS);
+								chartPN.add(tkcp);
+								chartPN.revalidate();
+								chartPN.repaint();
+							}
+						});
+					}
+					if(typeCBB.getSelectedItem().toString().equals("Thống kê doanh thu theo tháng")) {
+						yearEndLB.setVisible(true);
+						yearEnd.setVisible(true);
+						yearStartLB.setVisible(true);
+						yearStart.setVisible(true);
+						monthStartLB.setVisible(true);
+						monthStart.setVisible(true);
+						monthEndLB.setVisible(true);
+						monthEnd.setVisible(true);
+						acceptBTN.setVisible(true);
+						acceptBTN.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								System.out.print("Thống kê doanh thu theo tháng");
+								if(Integer.parseInt(monthStart.getSelectedItem().toString()) > Integer.parseInt(monthEnd.getSelectedItem().toString())){
+									JOptionPane.showMessageDialog(null, "Tháng bắt đầu không được lớn hơn tháng kết thúc","Thống kê doanh thu theo tháng",JOptionPane.ERROR_MESSAGE);
+										return;
+								}
+								if(Integer.parseInt(yearStart.getSelectedItem().toString()) > Integer.parseInt(yearEnd.getSelectedItem().toString())){
+									JOptionPane.showMessageDialog(null, "Năm bắt đầu không được lớn hơn Năm kết thúc","Thống kê doanh thu theo tháng",JOptionPane.ERROR_MESSAGE);
+										return;
+								}
+								
+								chartPN.removeAll();
+								thongKeDoanhThuTheoThang tkdttt = new thongKeDoanhThuTheoThang(maCS,
+										Integer.parseInt(monthStart.getSelectedItem().toString()),
+										Integer.parseInt(yearStart.getSelectedItem().toString()),
+										Integer.parseInt(monthEnd.getSelectedItem().toString()),
+										Integer.parseInt(yearEnd.getSelectedItem().toString()));
+								chartPN.add(tkdttt);
+								chartPN.revalidate();
+								chartPN.repaint();
+							}
+						});
+					}
+					if(typeCBB.getSelectedItem().toString().trim().equals("Thống kê doanh thu theo năm")) {
+						yearEnd.setVisible(true);
+						yearEndLB.setVisible(true);
+						yearStartLB.setVisible(true);
+						yearStart.setVisible(true);
+						monthStartLB.setVisible(false);
+						monthStart.setVisible(false);
+						monthEndLB.setVisible(false);
+						monthEnd.setVisible(false);
+						acceptBTN.setVisible(true);
+						acceptBTN.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								if(Integer.parseInt(yearStart.getSelectedItem().toString()) > Integer.parseInt(yearEnd.getSelectedItem().toString())){
+									JOptionPane.showMessageDialog(null, "Năm bắt đầu không được lớn hơn Năm kết thúc","Thống kê doanh thu theo tháng",JOptionPane.ERROR_MESSAGE);
+										return;
+								}
+								chartPN.removeAll();
+								thongKeDoanhThuTheoNam tkdttn = new thongKeDoanhThuTheoNam(maCS, Integer.parseInt(yearStart.getSelectedItem().toString()), Integer.parseInt(yearEnd.getSelectedItem().toString()));
+								chartPN.add(tkdttn);
+								chartPN.revalidate();
+								chartPN.repaint();
+							}
+						});
+					}
+					if(typeCBB.getSelectedItem().toString().equals("Thống kê chi phí theo tháng")) {
+						yearEndLB.setVisible(true);
+						yearEnd.setVisible(true);
+						yearStartLB.setVisible(true);
+						yearStart.setVisible(true);
+						monthStartLB.setVisible(true);
+						monthStart.setVisible(true);
+						monthEndLB.setVisible(true);
+						monthEnd.setVisible(true);
+						acceptBTN.setVisible(true);
+						acceptBTN.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								System.out.print("Thống kê chi phí theo tháng");
+								if(Integer.parseInt(monthStart.getSelectedItem().toString()) > Integer.parseInt(monthEnd.getSelectedItem().toString())){
+									JOptionPane.showMessageDialog(null, "Tháng bắt đầu không được lớn hơn tháng kết thúc","Thống kê doanh thu theo tháng",JOptionPane.ERROR_MESSAGE);
+										return;
+								}
+								if(Integer.parseInt(yearStart.getSelectedItem().toString()) > Integer.parseInt(yearEnd.getSelectedItem().toString())){
+									JOptionPane.showMessageDialog(null, "Năm bắt đầu không được lớn hơn Năm kết thúc","Thống kê doanh thu theo tháng",JOptionPane.ERROR_MESSAGE);
+										return;
+								}
+								chartPN.removeAll();
+								thongKeChiPhiTheoThang tkcptt = new thongKeChiPhiTheoThang(maCS,
+										Integer.parseInt(monthStart.getSelectedItem().toString()),
+										Integer.parseInt(yearStart.getSelectedItem().toString()),
+										Integer.parseInt(monthEnd.getSelectedItem().toString()),
+										Integer.parseInt(yearEnd.getSelectedItem().toString()));
+								chartPN.add(tkcptt);
+								chartPN.revalidate();
+								chartPN.repaint();
+							}
+						});
+					}
 					
-				}
-				if(typeCBB.getSelectedItem().toString().equals("Thống kê doanh thu theo năm")) {
-					System.out.print("Thống kê doanh thu theo năm");
-					yearEnd.setVisible(true);
-					yearEndLB.setVisible(true);
-					yearStartLB.setVisible(true);
-					yearStart.setVisible(true);
-					monthStartLB.setVisible(false);
-					monthStart.setVisible(false);
-					monthEndLB.setVisible(false);
-					monthEnd.setVisible(false);
-					acceptBTN.setVisible(true);
-				}
-				if(typeCBB.getSelectedItem().toString().equals("Thống kê chi phí theo tháng")) {
-					System.out.print("Thống kê chi phí theo tháng");
-					yearEndLB.setVisible(true);
-					yearEnd.setVisible(true);
-					yearStartLB.setVisible(true);
-					yearStart.setVisible(true);
-					monthStartLB.setVisible(true);
-					monthStart.setVisible(true);
-					monthEndLB.setVisible(true);
-					monthEnd.setVisible(true);
-					acceptBTN.setVisible(true);
+					if(typeCBB.getSelectedItem().toString().equals("Thống kê chi phí theo năm")) {
+						yearEndLB.setVisible(true);
+						yearEnd.setVisible(true);
+						yearStartLB.setVisible(true);
+						yearStart.setVisible(true);
+						monthEndLB.setVisible(false);
+						monthEnd.setVisible(false);
+						monthStartLB.setVisible(false);
+						monthStart.setVisible(false);
+						acceptBTN.setVisible(true);
+						acceptBTN.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								if(Integer.parseInt(yearStart.getSelectedItem().toString()) > Integer.parseInt(yearEnd.getSelectedItem().toString())){
+									JOptionPane.showMessageDialog(null, "Năm bắt đầu không được lớn hơn Năm kết thúc","Thống kê doanh thu theo tháng",JOptionPane.ERROR_MESSAGE);
+										return;
+								}
+								chartPN.removeAll();
+								thongKeChiPhiTheoNam tkcptn = new thongKeChiPhiTheoNam(maCS, Integer.parseInt(yearStart.getSelectedItem().toString()), Integer.parseInt(yearEnd.getSelectedItem().toString()));
+								chartPN.add(tkcptn);
+								chartPN.revalidate();
+								chartPN.repaint();
+							}
+						});
+					}
 				}
 				
-				if(typeCBB.getSelectedItem().toString().equals("Thống kê chi phí theo năm")) {
-					System.out.print("Thống kê chi phí theo năm");
-					yearEndLB.setVisible(true);
-					yearEnd.setVisible(true);
-					yearStartLB.setVisible(true);
-					yearStart.setVisible(true);
-					monthEndLB.setVisible(false);
-					monthEnd.setVisible(false);
-					monthStartLB.setVisible(false);
-					monthStart.setVisible(false);
-					acceptBTN.setVisible(true);
-				}
 			}
 		});
 		selectPN.add(typeCBB);
@@ -211,10 +318,7 @@ public class thongKeCTR extends JPanel{
 		selectPN.add(yearEndLB);
 		selectPN.add(yearEnd);
 		selectPN.add(acceptBTN);
-		typeCBB.setModel(new DefaultComboBoxModel<String>(new String[] {"Chọn cách thống kê", "Thống kê tổng chi phí", "Thống kê tổng doanh thu", "Thống kê doanh thu theo tháng", "Thống kê doanh thu theo năm ", "Thống kê chi phí theo năm", "Thống kê chi phí theo tháng"}));
+		typeCBB.setModel(new DefaultComboBoxModel<String>(new String[] {"Chọn cách thống kê", "Thống kê tổng chi phí", "Thống kê tổng doanh thu", "Thống kê doanh thu theo tháng", "Thống kê doanh thu theo năm", "Thống kê chi phí theo năm", "Thống kê chi phí theo tháng"}));
 		typeCBB.setFont(new Font("Times New Roman", Font.PLAIN, 17));
-		
-		
-		
 	}
 }

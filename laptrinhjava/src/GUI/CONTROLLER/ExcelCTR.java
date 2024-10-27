@@ -37,6 +37,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
+import javax.swing.border.LineBorder;
 public class ExcelCTR extends JPanel{
 	private JTextField fileNameTF;
 	private JTextField firstSheetNameTF;
@@ -78,6 +79,8 @@ public class ExcelCTR extends JPanel{
 			add(title);
 			
 			JPanel fileInforPN = new JPanel();
+			fileInforPN.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+			fileInforPN.setBackground(new Color(119, 230, 160));
 			fileInforPN.setBounds(0, 68, 1200, 175);
 			add(fileInforPN);
 			fileInforPN.setLayout(null);
@@ -115,6 +118,7 @@ public class ExcelCTR extends JPanel{
 			fileInforPN.add(pathNameLB);
 			
 			JPanel dataPanel = new JPanel();
+			dataPanel.setBackground(new Color(241, 250, 255));
 			dataPanel.setBounds(0, 250, 1200, 650);
 			add(dataPanel);
 			dataPanel.setLayout(null);

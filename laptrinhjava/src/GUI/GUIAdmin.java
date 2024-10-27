@@ -471,6 +471,8 @@ public class GUIAdmin{
             }
         });
         importExcelBTN.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 23));
+        importExcelBTN.setIcon(new ImageIcon(scaleExcelIcon));
+        importExcelBTN.setFocusPainted(false);
         importExcelBTN.setBounds(23, 460, 300, 50);
         managementPanel.add(importExcelBTN);
         
@@ -488,6 +490,8 @@ public class GUIAdmin{
         });
         statisticalBTN.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 23));
         statisticalBTN.setBounds(23, 580, 300, 50);
+        statisticalBTN.setIcon(new ImageIcon(scaleChartIcon));
+        statisticalBTN.setFocusPainted(false);
         managementPanel.add(statisticalBTN);
        
         //chức năng nhập hàng

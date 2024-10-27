@@ -32,6 +32,7 @@ import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.LineBorder;
 
 public class ImportExcelCTR extends JPanel {
 	/**
@@ -53,6 +54,8 @@ public class ImportExcelCTR extends JPanel {
 		add(title);
 		
 		JPanel fileInforPN = new JPanel();
+		fileInforPN.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		fileInforPN.setBackground(new Color(119, 230, 160));
 		fileInforPN.setLayout(null);
 		fileInforPN.setBounds(0, 70, 1200, 175);
 		add(fileInforPN);
@@ -228,6 +231,7 @@ public class ImportExcelCTR extends JPanel {
 				}
 			}
 		});
+		dataPanel.setBackground(new Color(241, 250, 255));
 		dataPanel.setLayout(null);
 		dataPanel.setBounds(0, 250, 1200, 650);
 		add(dataPanel);
