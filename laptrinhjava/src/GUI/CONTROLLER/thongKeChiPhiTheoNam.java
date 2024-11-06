@@ -11,7 +11,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import BLL.BLLThongKeDonHang;
 import DTO.DTOThongKe;
-import DTO.ThuChi;
 
 import javax.swing.*;
 import java.awt.*;

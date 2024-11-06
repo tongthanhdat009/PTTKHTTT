@@ -8,12 +8,8 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
-import DTO.DTOQuyen;
 import DTO.DTOTaiKhoan;
-import DTO.HoiVien;
 import DTO.NhanVien;
-import DTO.dsHoiVien;
-import GUI.CONTROLLER.nhapHang;
 
 public class DataNhanVien {
     private Connection con;
@@ -207,8 +203,7 @@ public class DataNhanVien {
                 DTOTaiKhoan tKhoan = new DTOTaiKhoan(rs.getString("IDTaiKhoan"),
                 					rs.getString("TaiKhoan"),
                 					rs.getString("MatKhau"),
-                					rs.getString("IDQuyen"),
-                					rs.getString("Status"));
+                					rs.getString("IDQuyen"));
 				dsTK.add(tKhoan);
 				
 				dsQUYEN.add(rs.getString("TenQuyen"));
@@ -346,5 +341,35 @@ public class DataNhanVien {
             e.printStackTrace();
         }
         return tenNV;
+    }
+
+    public boolean kiemTraTonTaiSDTNhanVien(String sdt) {
+        try {
+            PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS Count FROM NhanVien WHERE SoDienThoai = ?");
+            ps.setString(1, sdt);
+            ResultSet rsExist = ps.executeQuery();
+            if (rsExist.next()) {
+                int count = rsExist.getInt("Count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean kiemTraTonTaiSoCCCDNhanVien(String soCCCD) {
+        try {
+            PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS Count FROM NhanVien WHERE SoCCCD = ?");
+            ps.setString(1, soCCCD);
+            ResultSet rsExist = ps.executeQuery();
+            if (rsExist.next()) {
+                int count = rsExist.getInt("Count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

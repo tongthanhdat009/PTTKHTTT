@@ -167,20 +167,8 @@ public class GUIAdmin{
         adminFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                tk.setStatus("OFF");
-                // Xử lý khi JFrame đang được đóng
-                // Có thể hỏi người dùng trước khi đóng
-                // Thực sự đóng JFrame
-                if(bllDangNhap.suaTrangThaiTK(tk)){
-                    System.out.println("JFrame đã bị đóng!");
-                    adminFrame.dispose();
-                    new GUILogin();
-                }
-                else{
-                    JOptionPane.showMessageDialog(null,"Trạng thái tài khoản chưa được thay đổi","Error",JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
                 adminFrame.dispose();
+                new GUILogin();
             }
         });
         mainPanel.setLocation(0, 0);
@@ -535,16 +523,8 @@ public class GUIAdmin{
         	public void actionPerformed(ActionEvent e) {
         		int result = JOptionPane.showConfirmDialog(mainPanel, "Bạn muốn đăng xuất chứ?");
         		if(result == 0) {
-        			System.out.println("Bạn đã đăng xuất");
-                    tk.setStatus("OFF");
-                    if(bllDangNhap.suaTrangThaiTK(tk)){
-                        adminFrame.dispose();
-                        new GUILogin();
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(null,"Đăng xuất không thành công!","Error",JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
+                    adminFrame.dispose();
+                    new GUILogin();
         		}
         		else {
         			return;

@@ -8,18 +8,14 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import BLL.BLLQuanLyDanhSach;
-import BLL.BLLThongKeDonHang;
 import DTO.CoSo;
 import DTO.DSCoSo;
-import DTO.DTOThongKe;
 
 import java.awt.Font;
 import javax.swing.JComboBox;
-import javax.sound.midi.SysexMessage;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
@@ -30,9 +26,7 @@ public class thongKeCTR extends JPanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private BLLThongKeDonHang bllThongKeDonHang = new BLLThongKeDonHang();
 	private BLLQuanLyDanhSach bllQuanLyDanhSach = new BLLQuanLyDanhSach();
-	@SuppressWarnings("unchecked")
 	public thongKeCTR() {
 		setBackground(new Color(241, 255, 250));
 		this.setSize(1200,900);

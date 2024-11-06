@@ -101,7 +101,7 @@ public class BLLImportExcel {
 	        if(kiemTraCacCotNhapVao(sheet, ds).equals("Kiểm tra tên cột thành công !")) {
 	        	for(int i=1;i<=sheet.getLastRowNum();i++) {
 	        		HoiVien tempHoiVien = new HoiVien();
-	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001","");
+	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001");
 	        		XSSFRow row = sheet.getRow(i);
 	        		for(int j=0;j<tenCotHV.size();j++) {
 	        			if(row == null) {
@@ -285,7 +285,7 @@ public class BLLImportExcel {
 	        if(kiemTraCacCotNhapVao(sheet, ds).equals("Kiểm tra tên cột thành công !")) {
 	        	for(int i=1;i<=sheet.getLastRowNum();i++) {
 	        		NhanVien tempNhanVien = new NhanVien();
-	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001","");
+	        		DTOTaiKhoan tempTaiKhoan = new DTOTaiKhoan("","","","Q0001");
 	        		XSSFRow row = sheet.getRow(i);
 	        		for(int j=0;j<tenCotNV.size();j++) {
 	        			if(row == null) {
