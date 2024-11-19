@@ -412,6 +412,7 @@ public class QuanLyBangNhanVienCTR {
                     } 
                     else if(jtf_password.getText().length() < 6) {
                     	JOptionPane.showMessageDialog(rightPanel, "Mật khẩu phải từ 6 kí tự","Error",JOptionPane.ERROR_MESSAGE);
+                    	return;
                     }
                     else {
                     	try {                            

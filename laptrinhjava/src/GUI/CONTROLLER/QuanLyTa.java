@@ -81,54 +81,54 @@ public class QuanLyTa extends JPanel {
 
                 
                 goodsNameTF = new JTextField();
-                goodsNameTF.setBounds(244, 77, 160, 36);
+                goodsNameTF.setBounds(244, 22, 160, 36);
                 thongTin.add(goodsNameTF);
                 goodsNameTF.setColumns(10);
                 
                 picTF = new JTextField();
-                picTF.setBounds(568, 130, 190, 36);
+                picTF.setBounds(997, 22, 160, 36);
                 thongTin.add(picTF);
                 picTF.setColumns(10);
                 
                 weightTF = new JTextField();
-                weightTF.setBounds(568, 30, 190, 36);
+                weightTF.setBounds(636, 22, 190, 36);
                 thongTin.add(weightTF);
                 weightTF.setColumns(10);
                 
                 materialTF = new JTextField();
-                materialTF.setBounds(244, 124, 160, 36);
+                materialTF.setBounds(244, 69, 160, 36);
                 thongTin.add(materialTF);
                 materialTF.setColumns(10);
                 
                 colorTF = new JTextField();
-                colorTF.setBounds(568, 80, 190, 36);
+                colorTF.setBounds(636, 69, 190, 36);
                 thongTin.add(colorTF);
                 colorTF.setColumns(10);
                 
                 JLabel goodsNameLB = new JLabel("Tên hàng hóa:");
                 goodsNameLB.setLabelFor(goodsNameTF);
                 goodsNameLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                goodsNameLB.setBounds(10, 89, 224, 27);
+                goodsNameLB.setBounds(47, 31, 224, 27);
                 thongTin.add(goodsNameLB);
                 
                 JLabel picLB = new JLabel("Hình ảnh:");
                 picLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                picLB.setBounds(435, 133, 123, 27);
+                picLB.setBounds(864, 31, 123, 27);
                 thongTin.add(picLB);
                 
                 JLabel weightLB = new JLabel("Khối lượng:");
                 weightLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                weightLB.setBounds(435, 28, 133, 36);
+                weightLB.setBounds(493, 18, 133, 36);
                 thongTin.add(weightLB);
                 
                 JLabel marterialLB = new JLabel("Chất liệu:");
                 marterialLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                marterialLB.setBounds(10, 128, 160, 36);
+                marterialLB.setBounds(47, 69, 160, 36);
                 thongTin.add(marterialLB);
                 
                 JLabel colorLB = new JLabel("Màu sắc:");
                 colorLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                colorLB.setBounds(435, 78, 100, 36);
+                colorLB.setBounds(488, 65, 100, 36);
                 thongTin.add(colorLB);
                 
                 // Tạo JTable
@@ -180,7 +180,7 @@ public class QuanLyTa extends JPanel {
                 });
                 // Tạo JScrollPane để chứa bảng và cho phép cuộn
                 JScrollPane scrollPane = new JScrollPane(bang);
-                scrollPane.setBounds(0, 320, 1200, 700); // Đặt kích thước cho JScrollPane
+                scrollPane.setBounds(0, 324, 1200, 700); // Đặt kích thước cho JScrollPane
 
                 // Thêm JScrollPane vào JPanel
                 add(scrollPane);

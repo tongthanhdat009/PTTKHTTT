@@ -82,28 +82,28 @@ public class QuanLyMayChay extends JPanel {
                 thongTin.setLayout(null);
                 
                 goodsNameTF = new JTextField();
-                goodsNameTF.setBounds(186, 80, 144, 36);
+                goodsNameTF.setBounds(186, 33, 144, 36);
                 thongTin.add(goodsNameTF);
                 goodsNameTF.setColumns(10);
                 
                 picTF = new JTextField();
-                picTF.setBounds(832, 33, 200, 36);
+                picTF.setBounds(936, 33, 200, 36);
                 thongTin.add(picTF);
                 picTF.setColumns(10);
                 
                 
                 congSuatTF = new JTextField();
-                congSuatTF.setBounds(521, 33, 144, 36);
+                congSuatTF.setBounds(569, 33, 144, 36);
                 thongTin.add(congSuatTF);
                 congSuatTF.setColumns(10);
                 
                 speedMaxTF = new JTextField();
-                speedMaxTF.setBounds(186, 130, 144, 36);
+                speedMaxTF.setBounds(186, 80, 144, 36);
                 thongTin.add(speedMaxTF);
                 speedMaxTF.setColumns(10);
                 
                 nsxTF = new JTextField();
-                nsxTF.setBounds(521, 80, 144, 36);
+                nsxTF.setBounds(569, 80, 144, 36);
                 thongTin.add(nsxTF);
                 nsxTF.setColumns(10);
                 
@@ -115,36 +115,36 @@ public class QuanLyMayChay extends JPanel {
                 JLabel goodsNameLB = new JLabel("Tên hàng hóa:");
                 goodsNameLB.setLabelFor(goodsNameTF);
                 goodsNameLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                goodsNameLB.setBounds(10, 89, 166, 27);
+                goodsNameLB.setBounds(10, 42, 166, 27);
                 thongTin.add(goodsNameLB);
                 
                 JLabel speedMaxLB = new JLabel("Tốc độ tối đa:");
                 speedMaxLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                speedMaxLB.setBounds(10, 139, 166, 27);
+                speedMaxLB.setBounds(10, 89, 166, 27);
                 thongTin.add(speedMaxLB);
                 
                 JLabel congSuatLB = new JLabel("Công suất:");
                 congSuatLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                congSuatLB.setBounds(367, 41, 123, 28);
+                congSuatLB.setBounds(387, 41, 123, 28);
                 thongTin.add(congSuatLB);
                 
                 JLabel nsxLB = new JLabel("Nhà sản xuất:");
                 nsxLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                nsxLB.setBounds(367, 80, 149, 36);
+                nsxLB.setBounds(387, 80, 149, 36);
                 thongTin.add(nsxLB);
                 
                 JLabel picLB = new JLabel("Hình ảnh:");
                 picLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                picLB.setBounds(699, 33, 123, 36);
+                picLB.setBounds(777, 33, 123, 36);
                 thongTin.add(picLB);
                 
                 JLabel kichThuocLB = new JLabel("Kích thước:");
                 kichThuocLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                kichThuocLB.setBounds(367, 139, 149, 27);
+                kichThuocLB.setBounds(777, 89, 149, 27);
                 thongTin.add(kichThuocLB);
                 
                 kichThuocTF = new JTextField();
-                kichThuocTF.setBounds(521, 129, 144, 39);
+                kichThuocTF.setBounds(936, 80, 200, 39);
                 thongTin.add(kichThuocTF);
                 kichThuocTF.setColumns(10);
 

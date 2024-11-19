@@ -83,12 +83,12 @@ public class QuanLyXa extends JPanel {
         // Initialize JTextFields
 
         goodsNameTF = new JTextField();
-        goodsNameTF.setBounds(145, 77, 149, 36);
+        goodsNameTF.setBounds(145, 30, 149, 36);
         thongTin.add(goodsNameTF);
         goodsNameTF.setColumns(10);
 
         picTF = new JTextField();
-        picTF.setBounds(426, 124, 149, 36);
+        picTF.setBounds(1020, 30, 149, 36);
         thongTin.add(picTF);
         picTF.setColumns(10);
 
@@ -98,12 +98,12 @@ public class QuanLyXa extends JPanel {
         loaiXaTF.setColumns(10);
 
         materialTF = new JTextField();
-        materialTF.setBounds(145, 124, 149, 36);
+        materialTF.setBounds(145, 98, 149, 36);
         thongTin.add(materialTF);
         materialTF.setColumns(10);
 
         lengthTF = new JTextField();
-        lengthTF.setBounds(426, 77, 149, 36);
+        lengthTF.setBounds(426, 98, 149, 36);
         thongTin.add(lengthTF);
         lengthTF.setColumns(10);
 
@@ -114,12 +114,12 @@ public class QuanLyXa extends JPanel {
 
         chieuCaoTF = new JTextField();
         chieuCaoTF.setColumns(10);
-        chieuCaoTF.setBounds(738, 77, 149, 36);
+        chieuCaoTF.setBounds(738, 98, 149, 36);
         thongTin.add(chieuCaoTF);
 
         taiTrongTF = new JTextField();
         taiTrongTF.setColumns(10);
-        taiTrongTF.setBounds(738, 124, 149, 36);
+        taiTrongTF.setBounds(1020, 98, 149, 36);
         thongTin.add(taiTrongTF);
 
         // Initialize JLabel
@@ -127,12 +127,12 @@ public class QuanLyXa extends JPanel {
         JLabel goodsNameLB = new JLabel("Tên hàng hóa:");
         goodsNameLB.setLabelFor(goodsNameTF);
         goodsNameLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        goodsNameLB.setBounds(10, 89, 147, 27);
+        goodsNameLB.setBounds(10, 33, 147, 27);
         thongTin.add(goodsNameLB);
 
         JLabel picLB = new JLabel("Hình ảnh:");
         picLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        picLB.setBounds(316, 133, 100, 27);
+        picLB.setBounds(910, 33, 100, 27);
         thongTin.add(picLB);
 
         JLabel loaiXaLB = new JLabel("Loại xà:");
@@ -142,17 +142,17 @@ public class QuanLyXa extends JPanel {
 
         JLabel materialLB = new JLabel("Chất liệu:");
         materialLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        materialLB.setBounds(10, 128, 110, 36);
+        materialLB.setBounds(20, 96, 110, 36);
         thongTin.add(materialLB);
 
         JLabel taiTrongLB = new JLabel("Tải trọng:");
         taiTrongLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        taiTrongLB.setBounds(607, 122, 100, 36);
+        taiTrongLB.setBounds(910, 96, 100, 36);
         thongTin.add(taiTrongLB);
 
         JLabel lengthLB = new JLabel("Chiều dài:");
         lengthLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        lengthLB.setBounds(316, 75, 110, 36);
+        lengthLB.setBounds(316, 96, 110, 36);
         thongTin.add(lengthLB);
 
         JLabel duongKinhLB = new JLabel("Đường kính:");
@@ -162,7 +162,7 @@ public class QuanLyXa extends JPanel {
 
         JLabel chieuCaoLB = new JLabel("Chiều cao:");
         chieuCaoLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        chieuCaoLB.setBounds(607, 80, 110, 27);
+        chieuCaoLB.setBounds(607, 101, 110, 27);
         thongTin.add(chieuCaoLB);
         
         // Initialize JTable and DefaultTableModel

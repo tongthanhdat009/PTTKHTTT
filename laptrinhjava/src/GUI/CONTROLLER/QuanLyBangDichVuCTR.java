@@ -111,17 +111,17 @@ public class QuanLyBangDichVuCTR {
         nhapLieu.setBackground(new Color(119, 230, 163));
 
         jlb_madv.setBounds(10, 40, 120, 30);
-        jlb_tendv.setBounds(410,40,120,30);
-        jtf_tendv.setBounds(550,40,150,30);
-        jlb_giadv.setBounds(810,40,120,30);
-        jtf_giadv.setBounds(950,40,150,30);
+        jlb_tendv.setBounds(10,40,120,30);
+        jtf_tendv.setBounds(150,40,150,30);
+        jlb_giadv.setBounds(410,40,120,30);
+        jtf_giadv.setBounds(550,40,150,30);
         
         jlb_thoigian.setBounds(10, 120, 150, 30);
         jtf_thoigian.setBounds(150, 120, 150, 30);
         jlb_mota.setBounds(410,120,150,30);
         jtf_mota.setBounds(550,120,150,30);
-        jlb_img.setBounds(810,120,150,30);
-        jtf_img.setBounds(950,120,150,30);
+        jlb_img.setBounds(810,40,150,30);
+        jtf_img.setBounds(950,40,150,30);
         
         nhapLieu.add(jlb_tendv);
         nhapLieu.add(jtf_tendv);

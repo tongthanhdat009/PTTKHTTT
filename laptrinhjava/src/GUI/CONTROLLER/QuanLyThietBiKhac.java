@@ -65,29 +65,29 @@ public class QuanLyThietBiKhac extends JPanel {
                 JPanel thongTin = new JPanel();
                 thongTin.setBorder(new LineBorder(new Color(0, 0, 0)));
                 thongTin.setBackground(new Color(119, 230, 163));
-                thongTin.setBounds(0, 100, 1190, 213);
+                thongTin.setBounds(0, 100, 1200, 213);
                 add(thongTin);
                 thongTin.setLayout(null);
                 
                 goodsNameTF = new JTextField();
-                goodsNameTF.setBounds(477, 117, 190, 36);
+                goodsNameTF.setBounds(303, 117, 190, 36);
                 thongTin.add(goodsNameTF);
                 goodsNameTF.setColumns(10);
                 
                 textField_6 = new JTextField();
-                textField_6.setBounds(764, 117, 190, 36);
+                textField_6.setBounds(683, 117, 190, 36);
                 thongTin.add(textField_6);
                 textField_6.setColumns(10);
                 
                 JLabel goodsNameLB = new JLabel("Tên thiết bị:");
                 goodsNameLB.setLabelFor(goodsNameTF);
                 goodsNameLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                goodsNameLB.setBounds(477, 79, 190, 27);
+                goodsNameLB.setBounds(303, 79, 190, 27);
                 thongTin.add(goodsNameLB);
                 
                 JLabel picLB = new JLabel("Hình ảnh:");
                 picLB.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 25));
-                picLB.setBounds(764, 79, 190, 27);
+                picLB.setBounds(683, 79, 190, 27);
                 thongTin.add(picLB);
 
                 JTable bangKhac = new JTable();
@@ -202,7 +202,7 @@ public class QuanLyThietBiKhac extends JPanel {
                                 
                 // Tạo JScrollPane để chứa bảng và cho phép cuộn
                 JScrollPane scrollPaneKhac = new JScrollPane(bangKhac);
-                scrollPaneKhac.setBounds(0, 320, 1183, 430); // Đặt kích thước cho JScrollPane
+                scrollPaneKhac.setBounds(0, 320, 1200, 430); // Đặt kích thước cho JScrollPane
 
                 // Thêm JScrollPane vào JPanel
                 add(scrollPaneKhac);
