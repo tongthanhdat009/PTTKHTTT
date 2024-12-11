@@ -18,6 +18,7 @@ import DTO.HoiVien;
 import DTO.NhanVien;
 import GUI.CONTROLLER.DuyetDonHangCTR;
 import GUI.CONTROLLER.ExcelCTR;
+import GUI.CONTROLLER.GUIXemDonHang;
 import GUI.CONTROLLER.MuaHangCTR;
 import GUI.CONTROLLER.QuanLyBangNhanVienCTR;
 import GUI.CONTROLLER.QuanLyThietBiCTR;
@@ -175,19 +176,35 @@ public class GUIUser extends JFrame {
         JButton billBTN = new JButton("Duyệt đơn hàng");
         billBTN.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 23));
         billBTN.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
+            public void actionPerformed(ActionEvent e) {
+                rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
                 rightPanel.revalidate(); // Cập nhật lại JPanel để hiển thị thay đổi
                 rightPanel.repaint(); // Vẽ lại JPanel
                 rightPanel.setLayout(null);
                 DuyetDonHangCTR ddDonHangCTR  = new DuyetDonHangCTR(coSoHienTai);
-                ddDonHangCTR.giaoDien(rightPanel);
-        	}
+                rightPanel.add(ddDonHangCTR);
+            }
         });
         billBTN.setBounds(23, 103, 300, 50);
         billBTN.setIcon(new ImageIcon(scaleBillIcon));
         billBTN.setFocusPainted(false);
         dsNut.add(billBTN);
+        JButton btXemGioHang = new JButton("Xem giỏ hàng");
+        btXemGioHang.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 23));
+        btXemGioHang.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
+                rightPanel.revalidate(); // Cập nhật lại JPanel để hiển thị thay đổi
+                rightPanel.repaint(); // Vẽ lại JPanel
+                rightPanel.setLayout(null);
+                GUIGioHang GioHang  = new GUIGioHang(tk.getIDTaiKhoan());
+                rightPanel.add(GioHang);
+        	}
+        });
+        btXemGioHang.setBounds(23, 103, 300, 50);
+        btXemGioHang.setIcon(new ImageIcon(scaleBillIcon));
+        btXemGioHang.setFocusPainted(false);
+        dsNut.add(btXemGioHang);
 //        billBTN.setBounds(23, 103, 300, 50);
 //        managementPanel.add(billBTN);
 
@@ -205,6 +222,21 @@ public class GUIUser extends JFrame {
         purchaseOrderBTN.setFocusPainted(false);
         purchaseOrderBTN.setIcon(new ImageIcon(scaleBillIcon));
         dsNut.add(purchaseOrderBTN);
+        JButton btXemDonHang = new JButton("Xem đơn hàng");
+        btXemDonHang.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GUIXemDonHang guiXemDonHang = new GUIXemDonHang(tk.getIDTaiKhoan());
+                rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
+                rightPanel.revalidate(); // Cập nhật lại JPanel để hiển thị thay đổi
+                rightPanel.repaint(); // Vẽ lại JPanel
+                rightPanel.setLayout(null);
+                rightPanel.add(guiXemDonHang);
+            }
+        });
+        btXemDonHang.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 23));
+        btXemDonHang.setFocusPainted(false);
+        btXemDonHang.setIcon(new ImageIcon(scaleBillIcon));
+        dsNut.add(btXemDonHang);
 
 //         JButton goodsBTN = new JButton("Nhập thiết bị");
 //         goodsBTN.addActionListener(new ActionListener() {

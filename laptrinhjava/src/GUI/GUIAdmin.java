@@ -234,7 +234,7 @@ public class GUIAdmin{
                 rightPanel.repaint(); // Vẽ lại JPanel
                 rightPanel.setLayout(null);
                 DuyetDonHangCTR ddDonHangCTR  = new DuyetDonHangCTR(coSoHienTai);
-                ddDonHangCTR.giaoDien(rightPanel);
+                rightPanel.add(ddDonHangCTR);
         	}
         });
         billBTN.setBounds(23, 100, 300, 50);

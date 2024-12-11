@@ -1,170 +1,217 @@
 package GUI.CONTROLLER;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.*;
 
 import BLL.TuanBLL;
-import DTO.ChiTietChiTietHoaDon;
-import DTO.HoaDonVaGia;
-import GUI.ChiTietHoaDon;
+import DTO.HoaDon;
 
-public class DuyetDonHangCTR extends JPanel{
+public class DuyetDonHangCTR extends JPanel {
     private String maCoSo;
     private TuanBLL bll = new TuanBLL();
-    public DuyetDonHangCTR(String maCoSo)
-    {
-        setLayout(null);
-//        setSize(1200,900);
-        setBackground(new Color(241, 255, 250));
-        setMaCoSo(maCoSo);
-        setBounds(0,0,1200,900);
-        
-        
-//        giaoDien();
-    }
-    public void setMaCoSo(String maCoSo) {
+    
+    private JButton btnChuaDuyet;
+    private JButton btnDaXuLy;
+    private JPanel panelContent;
+
+    public DuyetDonHangCTR(String maCoSo) {
         this.maCoSo = maCoSo;
-    }
-    public void giaoDien(JPanel rightPanel)
-    {
-        
-        ArrayList<HoaDonVaGia> ds = new ArrayList<>();
-        ds = bll.layDSHDCuaCoSo(maCoSo, "Chưa duyệt");
-        themDSHoaDon(ds, rightPanel);
-    }
-    public void themDSHoaDon(ArrayList<HoaDonVaGia> ds, JPanel rightPanel)
-    {
-        rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
-        rightPanel.revalidate(); // Cập nhật lại JPanel để hiển thị thay đổi
-        rightPanel.repaint(); // Vẽ lại JPanel
-        JLabel tieude = new JLabel("Duyệt đơn hàng");
-        tieude.setBounds(520, 20, 244, 40);
-        tieude.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 35));
+        setLayout(null);
+        setBounds(0, 0, 1200, 900);
+        setBackground(new Color(245, 245, 245)); // Màu nền nhẹ nhàng
 
-     // Tạo JRadioButton cho "Chưa duyệt"
-        JButton chuaDuyetBTN = new JButton("Chưa duyệt");
-        chuaDuyetBTN.setBackground(new Color(241, 255, 250));
-        chuaDuyetBTN.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        chuaDuyetBTN.setBounds(475, 69, 150, 23);
-        chuaDuyetBTN.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-					ArrayList<HoaDonVaGia> ds = new ArrayList<>();
-			        ds = bll.layDSHDCuaCoSo(maCoSo, "Chưa duyệt");
-			        themDSHoaDon(ds, rightPanel);
-			}
-		});
-        rightPanel.add(chuaDuyetBTN);
+        // Title: Duyệt Đơn Hàng
+        JLabel lblTitle = new JLabel("Duyệt Đơn Hàng", SwingConstants.CENTER);
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 28));
+        lblTitle.setBounds(0, 20, 1200, 40);
+        lblTitle.setForeground(new Color(0, 51, 102)); // Màu xanh đậm
+        add(lblTitle);
 
-        // Tạo JRadioButton cho "Đã duyệt"
-        JButton daDuyetBTN = new JButton("Đã duyệt");
-        daDuyetBTN.setBackground(new Color(241, 255, 250));
-        daDuyetBTN.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        daDuyetBTN.setBounds(675, 69, 150, 23);
-        daDuyetBTN.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-					ArrayList<HoaDonVaGia> ds = new ArrayList<>();
-			        ds = bll.layDSHDCuaCoSo(maCoSo, "Đã duyệt");
-			        themDSHoaDon(ds, rightPanel);
-			}
-		});
-        rightPanel.add(daDuyetBTN);
-
-        // Tạo ButtonGroup và thêm cả hai JRadioButton vào group
-        
-        rightPanel.add(tieude);
-        int soLuongHoaDon = ds.size();
-        JPanel dsHoaDonpn = new JPanel(new GridLayout(soLuongHoaDon+1,7,10,10));
-        JLabel maHoaDon2 = new JLabel("Mã hóa đơn");
-        JLabel maHoiVien2 = new JLabel("Tài khoản hội viên");
-        JLabel ngayXuatHoaDon2 = new JLabel("Ngày xuất hóa đơn");
-        JLabel trangThai2 = new JLabel("Trạng thái");
-        JLabel tongTien2 = new JLabel("Tổng");
-        JLabel chitietHoaDon2 = new JLabel("Xem chi tiết");
-        JLabel duyetBt2 = new JLabel("Duyệt");
-        maHoaDon2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        maHoiVien2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        ngayXuatHoaDon2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        trangThai2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        tongTien2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        chitietHoaDon2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        duyetBt2.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-        dsHoaDonpn.add(maHoaDon2);
-        dsHoaDonpn.add(maHoiVien2);
-        dsHoaDonpn.add(ngayXuatHoaDon2);
-        dsHoaDonpn.add(trangThai2);
-        dsHoaDonpn.add(tongTien2);
-        dsHoaDonpn.add(chitietHoaDon2);
-        dsHoaDonpn.add(duyetBt2);
-        for(int i=0;i<soLuongHoaDon;i++)
-        {
-            JLabel maHoaDon = new JLabel(ds.get(i).getMaHoaDon());
-            JLabel maHoiVien = new JLabel(ds.get(i).getMaHoiVien());
-            JLabel ngayXuatHoaDon = new JLabel(ds.get(i).getNgayXuatHoaDon().toString());
-            JLabel trangThai = new JLabel(ds.get(i).getTrangThai());
-            JLabel tongTien = new JLabel(String.valueOf(ds.get(i).getTongTien()/1000)+"K");
-            JButton chitietHoaDon = new JButton("Xem chi tiết");
-            JButton duyetBt = new JButton("Duyệt");
-            if(ds.get(i).getTrangThai().equals("Đã duyệt")){
-                duyetBt.setEnabled(false);
-                duyetBt.setText("Đã duyệt");
+        // Nút "Chưa Duyệt"
+        btnChuaDuyet = new JButton("Chưa Duyệt");
+        btnChuaDuyet.setFont(new Font("Arial", Font.BOLD, 16));
+        btnChuaDuyet.setBounds(250, 80, 200, 40);
+        btnChuaDuyet.setBackground(new Color(0, 123, 255));
+        btnChuaDuyet.setForeground(Color.WHITE);
+        btnChuaDuyet.setFocusPainted(false); // Tắt viền khi nhấn
+        btnChuaDuyet.setBorderPainted(false);
+        btnChuaDuyet.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                giaoDienDonChuaDuyet();
             }
-            chitietHoaDon.setBackground(Color.white);
-            duyetBt.setBackground(Color.white);
-            maHoaDon.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-            maHoiVien.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-            ngayXuatHoaDon.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-            trangThai.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-            tongTien.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-            chitietHoaDon.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-            duyetBt.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-            dsHoaDonpn.add(maHoaDon);
-            dsHoaDonpn.add(maHoiVien);
-            dsHoaDonpn.add(ngayXuatHoaDon);
-            dsHoaDonpn.add(trangThai);
-            dsHoaDonpn.add(tongTien);
-            dsHoaDonpn.add(chitietHoaDon);
-            dsHoaDonpn.add(duyetBt);
-            int index = i;
-            chitietHoaDon.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e)
-                {
-                    ArrayList<ChiTietChiTietHoaDon> chiTietHoaDon = new ArrayList<>();
-                    chiTietHoaDon = bll.layDSChiTietHoaDonCuaCoSo(ds.get(index).getMaHoiVien(), ds.get(index).getMaHoaDon(), maCoSo);
-                    new ChiTietHoaDon(chiTietHoaDon);
-                }
-            });
-            duyetBt.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e)
-                {
-                    if(bll.duyetHoaDonCuaCoSo(ds.get(index).getMaHoaDon(), maCoSo)) 
-                    {
-                        JOptionPane.showMessageDialog(null, "Thành công");
-                        duyetBt.setText("Đã duyệt");
-                        duyetBt.setEnabled(false);
-                    }
-                    else {
-                    	JOptionPane.showMessageDialog(null, "Thất bại");
-                    	return;
-                    }
-                }
-            });
-        }
-        JScrollPane cuon = new JScrollPane(dsHoaDonpn);
-        int cao = 60 * (soLuongHoaDon+1) ;
-        if(cao > 750) cao = 750; 
-        cuon.setBounds(0,150,1200,cao);
-        rightPanel.add(cuon);
+        });
+        add(btnChuaDuyet);
+
+        // Nút "Đã Xử Lý"
+        btnDaXuLy = new JButton("Đã Xử Lý");
+        btnDaXuLy.setFont(new Font("Arial", Font.BOLD, 16));
+        btnDaXuLy.setBounds(500, 80, 200, 40);
+        btnDaXuLy.setBackground(new Color(0, 123, 255));
+        btnDaXuLy.setForeground(Color.WHITE);
+        btnDaXuLy.setFocusPainted(false); // Tắt viền khi nhấn
+        btnDaXuLy.setBorderPainted(false);
+        btnDaXuLy.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                giaoDienDonDaXuLy();
+            }
+        });
+        add(btnDaXuLy);
+
+        // Panel chứa danh sách hóa đơn
+        panelContent = new JPanel();
+        panelContent.setLayout(null);
+        panelContent.setBounds(100, 140, 1000, 700);
+        add(panelContent);
+        giaoDienDonChuaDuyet();
     }
-    public static void main(String[] args)
-    {
-        new DuyetDonHangCTR("CS003");
+
+    // Giao diện cho danh sách hóa đơn chưa duyệt
+    public void giaoDienDonChuaDuyet() {
+        panelContent.removeAll();
+
+        ArrayList<HoaDon> dsHoaDonChuaDuyet = bll.layDanhSachHoaDonChuaDuyetCuaCoSo(maCoSo);
+        if (dsHoaDonChuaDuyet.isEmpty()) {
+            JLabel lblMessage = new JLabel("Không có hóa đơn chưa duyệt.");
+            lblMessage.setFont(new Font("Arial", Font.ITALIC, 16));
+            lblMessage.setBounds(350, 150, 300, 30);
+            panelContent.add(lblMessage);
+        } else {
+            int yPosition = 10;
+            for (HoaDon hoaDon : dsHoaDonChuaDuyet) {
+                JPanel hoaDonPanel = new JPanel();
+                hoaDonPanel.setLayout(null);
+                hoaDonPanel.setBounds(50, yPosition, 900, 80);
+                hoaDonPanel.setBackground(new Color(255, 255, 255)); // Màu nền trắng
+                hoaDonPanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
+
+                // Hiển thị mã hóa đơn
+                JLabel maHoaDonLabel = new JLabel("Mã: " + hoaDon.getMaHoaDon());
+                maHoaDonLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                maHoaDonLabel.setBounds(10, 10, 120, 30);
+                hoaDonPanel.add(maHoaDonLabel);
+
+                // Hiển thị tên cơ sở
+                JLabel tenCoSoLabel = new JLabel("Cơ sở: " + hoaDon.getTenCoSo());
+                tenCoSoLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                tenCoSoLabel.setBounds(140, 10, 200, 30);
+                hoaDonPanel.add(tenCoSoLabel);
+
+                // Hiển thị ngày xuất
+                JLabel ngayXuatLabel = new JLabel("Xuất: " + hoaDon.getNgayXuatHoaDon());
+                ngayXuatLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                ngayXuatLabel.setBounds(360, 10, 150, 30);
+                hoaDonPanel.add(ngayXuatLabel);
+
+                // Hiển thị trạng thái
+                JLabel trangThaiLabel = new JLabel("Trạng thái: " + hoaDon.getTrangThai());
+                trangThaiLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                trangThaiLabel.setBounds(520, 10, 160, 30);
+                hoaDonPanel.add(trangThaiLabel);
+
+                // Nút "Xem Chi Tiết"
+                JButton xemChiTietBtn = new JButton("Xem Chi Tiết");
+                xemChiTietBtn.setBounds(700, 10, 120, 30);
+                xemChiTietBtn.setFont(new Font("Arial", Font.PLAIN, 14));
+                xemChiTietBtn.setBackground(new Color(0, 204, 0));
+                xemChiTietBtn.setForeground(Color.WHITE);
+                xemChiTietBtn.setFocusPainted(false);
+                xemChiTietBtn.setBorderPainted(false);
+                xemChiTietBtn.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        ChiTietHoaDonCuaNV guiCTHD = new ChiTietHoaDonCuaNV(bll.layChiTietHoaDon(hoaDon.getMaHoaDon()), hoaDon.getTenCoSo(), hoaDon.getTenHoiVien(),hoaDon.getMaCoSo(),hoaDon.getMaHoaDon());
+                        guiCTHD.setVisible(true);
+                        new Thread(() -> {
+                            while (!guiCTHD.isClosed()) {
+                                try {
+                                    Thread.sleep(1000); // Kiểm tra mỗi 100ms
+                                } catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                            giaoDienDonChuaDuyet();
+                            // Cập nhật bảng hoặc thực hiện các hành động khác ở đây
+                        }).start();
+                    }
+                });
+                hoaDonPanel.add(xemChiTietBtn);
+
+                panelContent.add(hoaDonPanel);
+                yPosition += 90; // Khoảng cách giữa các hàng
+            }
+        }
+
+        panelContent.revalidate();
+        panelContent.repaint();
+    }
+
+    // Giao diện cho danh sách hóa đơn đã xử lý
+    public void giaoDienDonDaXuLy() {
+        panelContent.removeAll();
+
+        ArrayList<HoaDon> dsHoaDonDaXuLy = bll.layDanhSachHoaDonDaXuLyCuaCoSo(maCoSo);
+        if (dsHoaDonDaXuLy.isEmpty()) {
+            JLabel lblMessage = new JLabel("Không có hóa đơn đã xử lý.");
+            lblMessage.setFont(new Font("Arial", Font.ITALIC, 16));
+            lblMessage.setBounds(350, 150, 300, 30);
+            panelContent.add(lblMessage);
+        } else {
+            int yPosition = 10;
+            for (HoaDon hoaDon : dsHoaDonDaXuLy) {
+                JPanel hoaDonPanel = new JPanel();
+                hoaDonPanel.setLayout(null);
+                hoaDonPanel.setBounds(50, yPosition, 900, 80);
+                hoaDonPanel.setBackground(new Color(255, 255, 255)); // Màu nền trắng
+                hoaDonPanel.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
+
+                // Hiển thị mã hóa đơn
+                JLabel maHoaDonLabel = new JLabel("Mã: " + hoaDon.getMaHoaDon());
+                maHoaDonLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                maHoaDonLabel.setBounds(10, 10, 120, 30);
+                hoaDonPanel.add(maHoaDonLabel);
+
+                // Hiển thị tên cơ sở
+                JLabel tenCoSoLabel = new JLabel("Cơ sở: " + hoaDon.getTenCoSo());
+                tenCoSoLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                tenCoSoLabel.setBounds(140, 10, 200, 30);
+                hoaDonPanel.add(tenCoSoLabel);
+
+                // Hiển thị ngày xuất
+                JLabel ngayXuatLabel = new JLabel("Xuất: " + hoaDon.getNgayXuatHoaDon());
+                ngayXuatLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                ngayXuatLabel.setBounds(360, 10, 150, 30);
+                hoaDonPanel.add(ngayXuatLabel);
+
+                // Hiển thị trạng thái
+                JLabel trangThaiLabel = new JLabel("Trạng thái: " + hoaDon.getTrangThai());
+                trangThaiLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+                trangThaiLabel.setBounds(520, 10, 160, 30);
+                hoaDonPanel.add(trangThaiLabel);
+
+                // Nút "Xem Chi Tiết"
+                JButton xemChiTietBtn = new JButton("Xem Chi Tiết");
+                xemChiTietBtn.setBounds(700, 10, 120, 30);
+                xemChiTietBtn.setFont(new Font("Arial", Font.PLAIN, 14));
+                xemChiTietBtn.setBackground(new Color(0, 204, 0));
+                xemChiTietBtn.setForeground(Color.WHITE);
+                xemChiTietBtn.setFocusPainted(false);
+                xemChiTietBtn.setBorderPainted(false);
+                xemChiTietBtn.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        ChiTietHoaDonCuaKhach guiCTHD = new ChiTietHoaDonCuaKhach(bll.layChiTietHoaDon(hoaDon.getMaHoaDon()), hoaDon.getTenCoSo(), hoaDon.getTenHoiVien());
+                        guiCTHD.setVisible(true);
+                    }
+                });
+                hoaDonPanel.add(xemChiTietBtn);
+
+                panelContent.add(hoaDonPanel);
+                yPosition += 90; // Khoảng cách giữa các hàng
+            }
+        }
+
+        panelContent.revalidate();
+        panelContent.repaint();
     }
 }

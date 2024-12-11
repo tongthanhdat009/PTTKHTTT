@@ -2,15 +2,10 @@ package DAL;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 import DTO.CoSo;
 import DTO.DSCoSo;
-import DTO.DTOTaiKhoan;
-import DTO.HoiVien;
-import DTO.dsHoiVien;
 public class DataCoSo {
     private Connection con;
     private String dbUrl ="jdbc:sqlserver://localhost:1433;databaseName=main;encrypt=true;trustServerCertificate=true;";

@@ -3,7 +3,6 @@ package DAL;
 import java.sql.*;
 import java.util.ArrayList;
 
-import DTO.GioHang;
 import DTO.MayChay;
 import DTO.Ta;
 import DTO.ThongTinChiTietHangHoa;
@@ -407,36 +406,21 @@ public class DataHangHoa {
         }
         return false;
     }
-    public ArrayList<GioHang> layDSGioHang(String IDTaiKhoan)
-    {
-        ArrayList<GioHang> ds = new ArrayList<>();
-        String truyVan = "SELECT * FROM GioHang, HangHoa, HangHoaOCoSo WHERE IDTaiKhoan = '"+IDTaiKhoan+"' AND HangHoa.MaHangHoa = GioHang.MaHangHoa AND HangHoaOCoSo.MaHangHoa = GioHang.MaHangHoa AND HangHoaOCoSo.MaCoSo = GioHang.MaCoSo";
-        try {
-            con = DriverManager.getConnection(dbUrl, userName, password);
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(truyVan);
-            while(rs.next())
-            ds.add(new GioHang(rs.getString("IDTaiKhoan"), rs.getString("MaHangHoa"), rs.getInt("SoLuongHangHoa"), rs.getInt("GiaBan"), rs.getString("MaCoSo"), rs.getString("HinhAnh"), rs.getString("TenLoaiHangHoa")));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return ds;
-    }
-    public boolean xoaGioHang(String maHangHoa, String IDTaiKhoan, String maCoSo)
-    {
-        String truyVan = "DELETE FROM GioHang WHERE MaHangHoa = ? AND IDTaiKhoan = ? AND MaCoSo = ?";
-        try {
-            con = DriverManager.getConnection(dbUrl, userName, password);
-            PreparedStatement statement = con.prepareStatement(truyVan);
-            statement.setString(1, maHangHoa);
-            statement.setString(2, IDTaiKhoan);
-            statement.setString(3, maCoSo);
-            if(statement.executeUpdate() > 0) return true;
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return false;
-    }
+    // public boolean xoaGioHang(String maHangHoa, String IDTaiKhoan, String maCoSo)
+    // {
+    //     String truyVan = "DELETE FROM GioHang WHERE MaHangHoa = ? AND IDTaiKhoan = ? AND MaCoSo = ?";
+    //     try {
+    //         con = DriverManager.getConnection(dbUrl, userName, password);
+    //         PreparedStatement statement = con.prepareStatement(truyVan);
+    //         statement.setString(1, maHangHoa);
+    //         statement.setString(2, IDTaiKhoan);
+    //         statement.setString(3, maCoSo);
+    //         if(statement.executeUpdate() > 0) return true;
+    //     } catch (Exception e) {
+    //         System.out.println(e);
+    //     }
+    //     return false;
+    // }
     
     //sửa thông tin hàng hóa loại tạ
     public boolean SuaTa(Ta ta)

@@ -22,7 +22,6 @@ public class ThongTinHangHoa extends JFrame {
         add(anhLb);
         
         String thongTinst = bll.layThongTinChiTietHangHoa(maHangHoa, maCoSo);
-        System.out.println(thongTinst);
         JPanel thongTinPn = new JPanel(null);
         thongTinPn.setBackground(Color.WHITE);
         thongTinPn.setBounds(320, 0, 320, 360);

@@ -14,21 +14,16 @@ public class DataLamThongKe{
         }
     }
     public int timDoanhThuTheoThangCuaCoSo(String maCoSo, int thang, int nam) {
-        String truyVan= 
-        "SELECT MaCoSo, SUM(Gia) AS DoanhThu "+
-        "FROM HoaDon HD, ChiTietHoaDon CTHD "+
-        "WHERE CTHD.MaHD = HD.MaHD AND HD.MaHD NOT IN ("+
-        "    SELECT HD2.MaHD "+
-        "    FROM HoaDon HD2, ChiTietHoaDon CTHD2 "+
-        "    WHERE CTHD2.MaHD = HD2.MaHD AND CTHD2.TrangThai = N'Chưa duyệt' "+
-        ") AND CTHD.MaCoSo = ? AND MONTH(HD.NgayXuatHD) = ? AND YEAR(HD.NgayXuatHD) = ? "+
-        "GROUP BY MaCoSo";
+        String truyVan= "SELECT CS.MaCoSo, SUM(CTHD.Gia*CTHD.SoLuongHang) AS Tong\r\n" + //
+                        "FROM HoaDon HD, ChiTietHoaDon CTHD, CoSo CS\r\n" + //
+                        "WHERE HD.TrangThai = N'Đã duyệt' AND HD.MaHD = CTHD.MaHD AND HD.MaCoSo = CS.MaCoSo AND HD.MaCoSo = ? AND YEAR(HD.NgayDuyet) = ? AND MONTH(HD.NgayDuyet) = ?\r\n" + //
+                        "GROUP BY CS.MaCoSo";
         int tong = -1;
         try {
             PreparedStatement stmt = con.prepareStatement(truyVan);
             stmt.setString(1, maCoSo);
-            stmt.setInt(2, thang);
-            stmt.setInt(3, nam);
+            stmt.setInt(2, nam);
+            stmt.setInt(3, thang);
             ResultSet rs = stmt.executeQuery();
             if(rs.next()) tong = rs.getInt("DoanhThu");
             else tong = 0;
@@ -51,15 +46,10 @@ public class DataLamThongKe{
         return "Lỗi";
     }
     public int timDoanhThuTheoNamCuaCoSo(String maCoSo, int nam) {
-        String truyVan= 
-        "SELECT MaCoSo, SUM(Gia) AS DoanhThu "+
-        "FROM HoaDon HD, ChiTietHoaDon CTHD "+
-        "WHERE CTHD.MaHD = HD.MaHD AND HD.MaHD NOT IN ("+
-        "    SELECT HD2.MaHD "+
-        "    FROM HoaDon HD2, ChiTietHoaDon CTHD2 "+
-        "    WHERE CTHD2.MaHD = HD2.MaHD AND CTHD2.TrangThai = N'Chưa duyệt' "+
-        ") AND CTHD.MaCoSo = ? AND YEAR(HD.NgayXuatHD) = ? "+
-        "GROUP BY MaCoSo";
+        String truyVan= "SELECT CS.MaCoSo, SUM(CTHD.Gia*CTHD.SoLuongHang) AS Tong\r\n" + //
+                        "FROM HoaDon HD, ChiTietHoaDon CTHD, CoSo CS\r\n" + //
+                        "WHERE HD.TrangThai = N'Đã duyệt' AND HD.MaHD = CTHD.MaHD AND HD.MaCoSo = CS.MaCoSo AND HD.MaCoSo = ? AND YEAR(HD.NgayDuyet) = ?\r\n" + //
+                        "GROUP BY CS.MaCoSo";
         int tong = -1;
         try {
             PreparedStatement stmt = con.prepareStatement(truyVan);
@@ -74,15 +64,10 @@ public class DataLamThongKe{
         return tong;
     }
     public int timDoanhThuCuaCoSo(String maCoSo) {
-        String truyVan= 
-        "SELECT MaCoSo, SUM(Gia) AS DoanhThu "+
-        "FROM HoaDon HD, ChiTietHoaDon CTHD "+
-        "WHERE CTHD.MaHD = HD.MaHD AND HD.MaHD NOT IN ("+
-        "    SELECT HD2.MaHD "+
-        "    FROM HoaDon HD2, ChiTietHoaDon CTHD2 "+
-        "    WHERE CTHD2.MaHD = HD2.MaHD AND CTHD2.TrangThai = N'Chưa duyệt' "+
-        ") AND CTHD.MaCoSo = ? "+
-        "GROUP BY MaCoSo";
+        String truyVan= "SELECT CS.MaCoSo, SUM(CTHD.Gia*CTHD.SoLuongHang) AS Tong\r\n" + //
+                        "FROM HoaDon HD, ChiTietHoaDon CTHD, CoSo CS\r\n" + //
+                        "WHERE HD.TrangThai = N'Đã duyệt' AND HD.MaHD = CTHD.MaHD AND HD.MaCoSo = CS.MaCoSo AND HD.MaCoSo = ?\r\n" + //
+                        "GROUP BY CS.MaCoSo";
         int tong = -1;
         try {
             PreparedStatement stmt = con.prepareStatement(truyVan);
