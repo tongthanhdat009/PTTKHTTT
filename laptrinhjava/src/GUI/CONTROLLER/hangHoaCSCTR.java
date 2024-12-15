@@ -230,7 +230,7 @@ public class hangHoaCSCTR {
                         JOptionPane.showMessageDialog(null, "Không được sửa mã cơ sở!","Sửa thông tin",JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    if(!maHHGoc.equals(cbMaCoSo.getSelectedItem().toString())){
+                    if(!maHHGoc.equals(tfMaHangHoa.getText().toString())){
                         JOptionPane.showMessageDialog(null, "Không được sửa mã hàng hóa!","Sửa thông tin",JOptionPane.ERROR_MESSAGE);
                         return;
                     }

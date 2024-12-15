@@ -14,7 +14,7 @@ public class DataLamThongKe{
         }
     }
     public int timDoanhThuTheoThangCuaCoSo(String maCoSo, int thang, int nam) {
-        String truyVan= "SELECT CS.MaCoSo, SUM(CTHD.Gia*CTHD.SoLuongHang) AS Tong\r\n" + //
+        String truyVan= "SELECT CS.MaCoSo, SUM(CTHD.Gia*CTHD.SoLuongHang) AS DoanhThu\r\n" + //
                         "FROM HoaDon HD, ChiTietHoaDon CTHD, CoSo CS\r\n" + //
                         "WHERE HD.TrangThai = N'Đã duyệt' AND HD.MaHD = CTHD.MaHD AND HD.MaCoSo = CS.MaCoSo AND HD.MaCoSo = ? AND YEAR(HD.NgayDuyet) = ? AND MONTH(HD.NgayDuyet) = ?\r\n" + //
                         "GROUP BY CS.MaCoSo";
@@ -46,7 +46,7 @@ public class DataLamThongKe{
         return "Lỗi";
     }
     public int timDoanhThuTheoNamCuaCoSo(String maCoSo, int nam) {
-        String truyVan= "SELECT CS.MaCoSo, SUM(CTHD.Gia*CTHD.SoLuongHang) AS Tong\r\n" + //
+        String truyVan= "SELECT CS.MaCoSo, SUM(CTHD.Gia*CTHD.SoLuongHang) AS DoanhThu\r\n" + //
                         "FROM HoaDon HD, ChiTietHoaDon CTHD, CoSo CS\r\n" + //
                         "WHERE HD.TrangThai = N'Đã duyệt' AND HD.MaHD = CTHD.MaHD AND HD.MaCoSo = CS.MaCoSo AND HD.MaCoSo = ? AND YEAR(HD.NgayDuyet) = ?\r\n" + //
                         "GROUP BY CS.MaCoSo";
@@ -64,7 +64,7 @@ public class DataLamThongKe{
         return tong;
     }
     public int timDoanhThuCuaCoSo(String maCoSo) {
-        String truyVan= "SELECT CS.MaCoSo, SUM(CTHD.Gia*CTHD.SoLuongHang) AS Tong\r\n" + //
+        String truyVan= "SELECT CS.MaCoSo, SUM(CTHD.Gia*CTHD.SoLuongHang) AS DoanhThu\r\n" + //
                         "FROM HoaDon HD, ChiTietHoaDon CTHD, CoSo CS\r\n" + //
                         "WHERE HD.TrangThai = N'Đã duyệt' AND HD.MaHD = CTHD.MaHD AND HD.MaCoSo = CS.MaCoSo AND HD.MaCoSo = ?\r\n" + //
                         "GROUP BY CS.MaCoSo";
