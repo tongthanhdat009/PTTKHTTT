@@ -226,13 +226,13 @@ public class delegateCTR extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if(tempCheckBox.isSelected()) {
-						if(!(cNang.getTenChucNang().trim().equals("Mua hàng") || cNang.getTenChucNang().trim().equals("Thông tin cá nhân")) && iDQuyen.equals("Q0001")) {
-							JOptionPane.showMessageDialog(funcContent, "Nhóm quyền này chỉ được mua hàng hoặc xem thông tin cá nhân");
+						if(!(cNang.getTenChucNang().trim().equals("Xem đơn hàng") || cNang.getTenChucNang().trim().equals("Mua hàng") || cNang.getTenChucNang().trim().equals("Thông tin cá nhân")) && iDQuyen.equals("Q0001")) {
+							JOptionPane.showMessageDialog(null, "Nhóm quyền này không được sử dụng quyền này!");
 							tempCheckBox.setSelected(false);
 							return;
 						}
-						if (!iDQuyen.equals("Q0001")&& (cNang.getTenChucNang().trim().equals("Mua hàng")|| cNang.getTenChucNang().trim().equals("Thông tin cá nhân"))){
-							JOptionPane.showMessageDialog(funcContent, "Nhóm quyền này không có quyền được mua hàng hoặc xem thông tin cá nhân");
+						if (!iDQuyen.equals("Q0001") && (cNang.getTenChucNang().trim().equals("Xem đơn hàng") || cNang.getTenChucNang().trim().equals("Mua hàng")|| cNang.getTenChucNang().trim().equals("Thông tin cá nhân"))){
+							JOptionPane.showMessageDialog(null, "Nhóm quyền này không được sử dụng quyền này!");
 							tempCheckBox.setSelected(false);
 							return;
 						}
@@ -272,11 +272,11 @@ public class delegateCTR extends JPanel {
 						if (result == JOptionPane.YES_OPTION) {
 							DTOPhanQuyen pQuyen = new DTOPhanQuyen(iDQuyen, tempCheckBox.getName());
 							if(bllPhanQuyen.xoaPhanQuyen(pQuyen)){
-								JOptionPane.showMessageDialog(funcContent, "Thay đổi phân quyền thành công");
+								JOptionPane.showMessageDialog(null, "Thay đổi phân quyền thành công");
 								generateFunc(iDQuyen);
 								return;
 							}else {
-								JOptionPane.showMessageDialog(funcContent, "Thay đổi phân quyền không thành công!");
+								JOptionPane.showMessageDialog(null, "Thay đổi phân quyền không thành công!");
 								return;
 							}
 						} else if (result == JOptionPane.NO_OPTION) {
