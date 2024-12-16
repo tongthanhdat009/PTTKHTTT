@@ -244,6 +244,10 @@ public class QuanLyTa extends JPanel {
                 });
                 sua.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                        if(bang.getSelectedRow() < 0 ) {
+                            JOptionPane.showMessageDialog(null, "Vui lòng chọn thiết bị ở bảng để sửa");
+                            return;
+                        }
                         if (goodsNameTF.getText().equals("") || 
                             picTF.getText().equals("") ||
                             weightTF.getText().equals("") || 

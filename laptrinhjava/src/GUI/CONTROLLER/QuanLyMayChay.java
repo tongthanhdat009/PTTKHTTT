@@ -270,6 +270,10 @@ public class QuanLyMayChay extends JPanel {
                 });
                 sua.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                        if(bangMayChay.getSelectedRow() < 0 ) {
+                            JOptionPane.showMessageDialog(null, "Vui lòng chọn thiết bị ở bảng để sửa");
+                            return;
+                        }
                         if (goodsNameTF.getText().equals("") || 
                             picTF.getText().equals("") ||  congSuatTF.getText().equals("") || 
                             speedMaxTF.getText().equals("") || nsxTF.getText().equals("") || kichThuocTF.getText().equals("")) 

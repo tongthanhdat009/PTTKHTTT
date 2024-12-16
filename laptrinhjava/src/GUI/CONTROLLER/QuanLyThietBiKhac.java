@@ -163,6 +163,10 @@ public class QuanLyThietBiKhac extends JPanel {
                 });
                 sua.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+                        if(bangKhac.getSelectedRow() < 0 ) {
+                            JOptionPane.showMessageDialog(null, "Vui lòng chọn thiết bị ở bảng để sửa");
+                            return;
+                        }
                         if (goodsNameTF.getText().equals("") || textField_6.getText().equals("")) 
                         {
                             JOptionPane.showMessageDialog(null, "Thiếu thông tin");

@@ -293,6 +293,10 @@ public class QuanLyXa extends JPanel {
         });
         sua.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
+                if(bangXa.getSelectedRow() < 0 ) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn thiết bị ở bảng để sửa");
+                    return;
+                }
                 if(goodsNameTF.getText().equals("")||goodsNameTF.getText().equals("")||goodsNameTF.getText().equals("")||
                 goodsNameTF.getText().equals("")||goodsNameTF.getText().equals("")||goodsNameTF.getText().equals("")||goodsNameTF.getText().equals("")||
                 goodsNameTF.getText().equals("")) {
