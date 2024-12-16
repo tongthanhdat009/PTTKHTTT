@@ -43,6 +43,7 @@ public class ImportExcelCTR extends JPanel {
 	private BLLImportExcel bllImportExcel = new BLLImportExcel();
 	private JComboBox<String> sheetChooser = new JComboBox<String>();
 	private JPanel dataPanel = new JPanel();
+	private JButton acceptBTN;
 	public ImportExcelCTR() {
 		setBackground(new Color(241, 255, 250));
 		this.setSize(1200,900);
@@ -70,8 +71,9 @@ public class ImportExcelCTR extends JPanel {
 		pathNameLB.setBounds(471, 53, 202, 30);
 		fileInforPN.add(pathNameLB);
 		
-		JButton acceptBTN = new JButton("Xác nhận");
+		acceptBTN = new JButton("Xác nhận");
 		acceptBTN.setBounds(1015, 101, 130, 50);
+		acceptBTN.setVisible(false);
 		fileInforPN.add(acceptBTN);
 		
 		JComboBox<String> listChooser = new JComboBox<String>();
@@ -122,6 +124,8 @@ public class ImportExcelCTR extends JPanel {
 		JButton chooseFileBTN = new JButton("Chọn file:");
 		chooseFileBTN.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				acceptBTN.setVisible(false);
+				
 				// Tạo JFileChooser
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setAcceptAllFileFilterUsed(false);
@@ -189,19 +193,16 @@ public class ImportExcelCTR extends JPanel {
 							if(listChooser.getSelectedItem().equals("Hội viên")) {
 								System.out.println("Tạo bảng hội viên");
 								taoBangHV("Hội viên", bllImportExcel,dataPanel);
-								
 							}
 							else if(listChooser.getSelectedItem().equals("Nhân viên")) {
 								System.out.println("Tạo bảng nhân viên");
 								taoBangNV("Nhân viên", bllImportExcel, dataPanel);
-								
 							}
 						}
 						else if (choice == 1){
 							sheetChooser.setSelectedIndex(0);
 						}						
 					}
-					
 				}
 			}
 			
@@ -259,6 +260,7 @@ public class ImportExcelCTR extends JPanel {
 		JTable tempTB = null;
 		DefaultTableModel tableModel = null;
 		if(bllImportExcel.kiemTraDuLieuNV(sheet, ds).equals("Kiểm tra dữ liệu thành công!")) {
+			acceptBTN.setVisible(true);
 			ArrayList<NhanVien> dsNhanVien = bllImportExcel.getDSNhanVien();
 			ArrayList<DTOTaiKhoan> dsTaiKhoan = bllImportExcel.getDSTaiKhoan();
 			ArrayList<String> tenCot = bllImportExcel.getTenCotNV();
@@ -303,10 +305,14 @@ public class ImportExcelCTR extends JPanel {
 			}
 		    else {
 		        System.out.println("Danh sách Nhân Viên và Tài Khoản không có cùng số lượng!");
+		        JOptionPane.showMessageDialog(null, "Danh sách Nhân Viên và Tài Khoản không có cùng số lượng!","Import Excel",JOptionPane.ERROR_MESSAGE);
+				acceptBTN.setVisible(false);
+		        return;
 		    }
 		}
 		else {
 			JOptionPane.showMessageDialog(null, bllImportExcel.kiemTraDuLieuNV(sheet, ds),"Import Excel",JOptionPane.ERROR_MESSAGE);
+			acceptBTN.setVisible(false);
 			 return;
 		}
 	}
@@ -321,6 +327,7 @@ public class ImportExcelCTR extends JPanel {
 		JTable tempTB = null;
 		DefaultTableModel tableModel = null;
 		if(bllImportExcel.kiemTraDuLieuHV(sheet, ds).equals("Kiểm tra dữ liệu thành công!")) {
+			acceptBTN.setVisible(true);
 		    ArrayList<HoiVien> dsHoiVien = bllImportExcel.getDSHoiVien();
 		    ArrayList<DTOTaiKhoan> dsTaiKhoan = bllImportExcel.getDSTaiKhoan();
 		    ArrayList<String> tenCot = bllImportExcel.getTenCotHV();
@@ -365,10 +372,14 @@ public class ImportExcelCTR extends JPanel {
 		        dataPanel.repaint();
 		    } else {
 		        System.out.println("Danh sách Hội Viên và Tài Khoản không có cùng số lượng!");
+				JOptionPane.showMessageDialog(null,"Danh sách Hội Viên và Tài Khoản không có cùng số lượng!","Import Excel",JOptionPane.ERROR_MESSAGE);
+				acceptBTN.setVisible(false);
+				return;
 		    }
 		}
 		else {
 			JOptionPane.showMessageDialog(null, bllImportExcel.kiemTraDuLieuHV(sheet, ds),"Import Excel",JOptionPane.ERROR_MESSAGE);
+			acceptBTN.setVisible(false);
 			 return;
 		}
 	}
