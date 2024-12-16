@@ -114,6 +114,7 @@ public class BLLImportExcel {
 	        			}
 	        			else {
 	        				String text = cell.getStringCellValue().trim();
+	        				System.out.print(text);
 	        				switch (j) {
 	        				case 0:
 	        					String regex_maHV = "^HV\\d{3}$";

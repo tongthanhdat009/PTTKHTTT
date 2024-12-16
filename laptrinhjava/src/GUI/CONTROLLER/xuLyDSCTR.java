@@ -50,7 +50,7 @@ public class xuLyDSCTR {
     public void xuLyDanhSach(JPanel rightPanel){
         rightPanel.setLayout(null);
         //giới thiệu chức năng xử lý danh sách
-        JLabel param = new JLabel("<html>Giới thiệu chức năng quản lý danh sách <br> Bao gồm các tác vụ thêm, xóa, sửa thông tin các danh sách: <br>- Cơ sở <br>- Dịch vụ <br>- Hàng hóa cơ sở <br>Chọn danh sách để bắt đầu thao tác</html>"); 
+        JLabel param = new JLabel("<html>Giới thiệu chức năng quản lý danh sách <br> Bao gồm các tác vụ thêm, xóa, sửa thông tin các danh sách: <br>- Cơ sở <br>- Hàng hóa cơ sở <br>Chọn danh sách để bắt đầu thao tác</html>"); 
 
         param.setFont(new Font("Times New Roman",1,30));
         JPanel textPN = new JPanel();
@@ -66,7 +66,7 @@ public class xuLyDSCTR {
         
         
         //Chọn bảng cần quản lý
-        String[] tenDanhSach = {"Cơ sở", "Dịch vụ", "Hàng hóa cơ sở"};
+        String[] tenDanhSach = {"Cơ sở", "Hàng hóa cơ sở"};
         @SuppressWarnings("rawtypes")
         JComboBox danhSachBox = new JComboBox<String>(tenDanhSach);
         danhSachBox.setBounds(680,50,130,30);
@@ -128,12 +128,12 @@ public class xuLyDSCTR {
                 	coSoCTR csCTR = new coSoCTR(rightPanel,tenCotCS,dsCS,bangChinhSua,dataTable,scrollPane,bllQuanLyDanhSach);
                 	csCTR.update();
                 }
-                else if(selectedOption.equals("Dịch vụ")){
-                    ArrayList<dichVu> ds = new ArrayList<>();
-                    ds = bllQuanLyDanhSach.getDataDichvu();
-                    QuanLyBangDichVuCTR qlbdvCTR = new QuanLyBangDichVuCTR();
-                    qlbdvCTR.QuanLyBangDichVu(ds, rightPanel);
-                }
+//                else if(selectedOption.equals("Dịch vụ")){
+//                    ArrayList<dichVu> ds = new ArrayList<>();
+//                    ds = bllQuanLyDanhSach.getDataDichvu();
+//                    QuanLyBangDichVuCTR qlbdvCTR = new QuanLyBangDichVuCTR();
+//                    qlbdvCTR.QuanLyBangDichVu(ds, rightPanel);
+//                }
                 // else if (selectedOption.equals("Hội viên cơ sở")) {
             	// 	bllQuanLyDanhSach = new BLLQuanLyDanhSach();
             	// 	ArrayList<HoiVienCoSo> ds = new ArrayList<>();

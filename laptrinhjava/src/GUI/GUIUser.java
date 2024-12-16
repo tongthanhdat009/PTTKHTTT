@@ -19,6 +19,7 @@ import DTO.NhanVien;
 import GUI.CONTROLLER.DuyetDonHangCTR;
 import GUI.CONTROLLER.ExcelCTR;
 import GUI.CONTROLLER.GUIXemDonHang;
+import GUI.CONTROLLER.ImportExcelCTR;
 import GUI.CONTROLLER.MuaHangCTR;
 import GUI.CONTROLLER.QuanLyBangNhanVienCTR;
 import GUI.CONTROLLER.QuanLyThietBiCTR;
@@ -26,6 +27,7 @@ import GUI.CONTROLLER.delegateCTR;
 import GUI.CONTROLLER.hoiVienCTR;
 import GUI.CONTROLLER.informationCTR;
 import GUI.CONTROLLER.nhapHang;
+import GUI.CONTROLLER.thongKeCTR;
 import GUI.CONTROLLER.xuLyDSCTR;
 import GUI.CONTROLLER.xulyDDNCTR;
 
@@ -425,6 +427,23 @@ public class GUIUser extends JFrame {
         XuatExcelBTN.setFocusPainted(false);
         XuatExcelBTN.setIcon(new ImageIcon(scaleExcelIcon));
         dsNut.add(XuatExcelBTN);
+
+        JButton importExcelBTN = new JButton("Nhập file danh sách");
+        importExcelBTN.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
+                rightPanel.revalidate(); // Cập nhật lại JPanel để hiển thị thay đổi
+                rightPanel.repaint(); // Vẽ lại JPanel
+                rightPanel.setLayout(null);
+                ImportExcelCTR importExcelCTR = new ImportExcelCTR();
+                rightPanel.add(importExcelCTR);
+            }
+        });
+        importExcelBTN.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 23));
+        importExcelBTN.setIcon(new ImageIcon(scaleExcelIcon));
+        importExcelBTN.setFocusPainted(false);
+        importExcelBTN.setBounds(23, 460, 300, 50);
+        dsNut.add(importExcelBTN);
         
         JButton importgoods = new JButton("Nhập hàng");
         importgoods.addActionListener(new ActionListener() {
@@ -438,6 +457,24 @@ public class GUIUser extends JFrame {
         importgoods.setIcon(new ImageIcon(scaleEmployeeIcon));
         importgoods.setFocusPainted(false);
         dsNut.add(importgoods);
+        
+        JButton statisticalBTN = new JButton("Thống kê");
+        statisticalBTN.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		rightPanel.removeAll(); // Xóa tất cả các thành phần con khỏi JPanel
+                rightPanel.revalidate(); // Cập nhật lại JPanel để hiển thị thay đổi
+                rightPanel.repaint(); // Vẽ lại JPanel
+                rightPanel.setLayout(null);
+        		thongKeCTR tkCTR = new thongKeCTR();
+        		rightPanel.add(tkCTR);
+        		System.out.println("CMM");
+        	}
+        });
+        statisticalBTN.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 23));
+        statisticalBTN.setBounds(23, 580, 300, 50);
+        statisticalBTN.setIcon(new ImageIcon(scaleChartIcon));
+        statisticalBTN.setFocusPainted(false);
+        dsNut.add(statisticalBTN);
         
         JPanel leftPanel = new JPanel();
         leftPanel.setBorder(new LineBorder(new Color(64, 0, 64), 2));

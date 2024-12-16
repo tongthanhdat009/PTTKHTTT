@@ -147,7 +147,7 @@ public class DataNhanVien {
     		String gioiTinh = "GioiTinh = N'"+nv.getGioitinh().trim()+"' AND ";
     		truyVan += gioiTinh;
     	}
-    	if(!nv.getNgaysinh().trim().equals("2024-1-1")) {
+    	if(!nv.getNgaysinh().trim().equals("2024-01-01")) {
     		String ngaySinh = "NgaySinh = '"+nv.getNgaysinh().trim()+"' AND ";
     		truyVan +=ngaySinh;
     	}
